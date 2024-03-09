@@ -1,3 +1,4 @@
+using commute_planner.MapsApi;
 using commute_planner.Web;
 using commute_planner.Web.Components;
 
@@ -13,6 +14,15 @@ builder.Services.AddRazorComponents()
 builder.Services.AddOutputCache();
 
 builder.Services.AddHttpClient<WeatherApiClient>(client => client.BaseAddress = new("http://apiservice"));
+builder.Services.AddHttpClient<MapsApiClient>(client =>
+{
+    client.BaseAddress =
+        new Uri("https://routes.googleapis.com/directions");
+
+    client.DefaultRequestHeaders.Add("X-Goog-Api-Key",
+        Environment.GetEnvironmentVariable("GOOGLE_API_KEY") ??
+        throw new InvalidOperationException("Missing API key."));
+});
 
 var app = builder.Build();
 

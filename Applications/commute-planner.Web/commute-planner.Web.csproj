@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Components\commute-planner.MapsApi\commute-planner.MapsApi.csproj" />
     <ProjectReference Include="..\..\Components\commute-planner.ServiceDefaults\commute-planner.ServiceDefaults.csproj" />
   </ItemGroup>
 
