@@ -16,6 +16,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Components", "Components", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.MapsApi", "Components\commute-planner.MapsApi\commute-planner.MapsApi.csproj", "{B52F9072-3F60-4257-9BF4-5ABFCA149A0D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Databases", "Databases", "{121ADA73-3F72-4A6E-B493-9E3D27EDBE8A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.CommuteDatabase", "Databases\commute-planner.CommuteDatabase\commute-planner.CommuteDatabase.csproj", "{801DF0F7-0C52-487D-BD63-9E2B9335C712}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +46,10 @@ Global
 		{B52F9072-3F60-4257-9BF4-5ABFCA149A0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B52F9072-3F60-4257-9BF4-5ABFCA149A0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B52F9072-3F60-4257-9BF4-5ABFCA149A0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{801DF0F7-0C52-487D-BD63-9E2B9335C712}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{801DF0F7-0C52-487D-BD63-9E2B9335C712}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{801DF0F7-0C52-487D-BD63-9E2B9335C712}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{801DF0F7-0C52-487D-BD63-9E2B9335C712}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,5 +63,6 @@ Global
 		{8C940B16-C211-40FA-9124-1ABDC4EE028A} = {41523A73-476B-432D-9002-F37CD776B48C}
 		{DAB6F3B2-9F03-4661-B106-072A44A83EEE} = {968BA1D3-D9D7-44EA-A0CE-B57BF0501287}
 		{B52F9072-3F60-4257-9BF4-5ABFCA149A0D} = {968BA1D3-D9D7-44EA-A0CE-B57BF0501287}
+		{801DF0F7-0C52-487D-BD63-9E2B9335C712} = {121ADA73-3F72-4A6E-B493-9E3D27EDBE8A}
 	EndGlobalSection
 EndGlobal
