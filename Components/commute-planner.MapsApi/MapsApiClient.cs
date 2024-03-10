@@ -10,7 +10,7 @@ public class MapsApiClient(HttpClient httpClient)
     ComputeRoutesRequest request, CancellationToken token = default)
   {
     var response = await httpClient.PostAsJsonAsync<ComputeRoutesRequest>(
-      "/v2:computeRoutes", request, JsonSerializerOptions.Default, token);
+      "v2:computeRoutes", request, JsonSerializerOptions.Default, token);
 
     return await response.Content.ReadFromJsonAsync<ComputeRoutesResponse>(
       token);

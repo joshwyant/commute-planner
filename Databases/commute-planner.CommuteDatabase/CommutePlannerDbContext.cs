@@ -3,16 +3,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace commute_planner.CommuteDatabase;
 
-public class CommutePlannerDbContext : DbContext
+public class CommutePlannerDbContext(DbContextOptions options)
+  : DbContext(options)
 {
   public DbSet<DrivingRoute> DrivingRoutes { get; set; } = null!;
   public DbSet<TransitRoute> TransitRoutes { get; set; } = null!;
   public DbSet<MatchingRoute> MatchingRoutes { get; set; } = null!;
-
-  protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-  {
-    optionsBuilder.UseNpgsql();
-  }
 }
 
 public class DrivingRoute
@@ -59,7 +55,12 @@ public class TransitRoute
 
 public class MatchingRoute
 {
+  [Key]
   public int MatchingRouteId { get; init; }
+  
+  [StringLength(100)]
+  public required string Name { get; init; }
+  
   public required DrivingRoute DrivingRoute { get; init; }
   public required TransitRoute TransitRoute { get; init; }
 }

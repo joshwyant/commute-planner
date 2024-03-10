@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\commute-planner.ApiService\commute-planner.ApiService.csproj" />
     <ProjectReference Include="..\commute-planner.Web\commute-planner.Web.csproj" />
+    <ProjectReference Include="..\commute-planner.DataFetcher\commute-planner.DataFetcher.csproj" />
   </ItemGroup>
 
   <ItemGroup>
