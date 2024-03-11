@@ -26,7 +26,7 @@ app.MapPost("/directions/v2:computeRoutes", (ComputeRoutesRequest request) =>
         var kph = Random.Shared.Next(20, 80);
         var mps = kph * 1000 / 3600;
         var t = m / mps;
-    return new MapsRoute(m, $"{t}s");
+    return new ComputeRoutesResponse(new[]{new MapsRoute(m, $"{t}s")});
 })
 .WithName("ComputeRoutes")
 .WithOpenApi();
@@ -35,6 +35,12 @@ app.Run();
 
 namespace commute_planner.FakeMapsServer
 {
+    public class ComputeRoutesResponse(MapsRoute[] routes)
+    {
+        [JsonPropertyName("routes")]
+        public MapsRoute[]? Routes { get; set; } = routes;
+    }
+    
     public class MapsRoute(int distanceInMeters, string? duration)
     {
         [JsonPropertyName("distanceMeters")]

@@ -5,8 +5,8 @@ namespace commute_planner.TransitApi;
 
 public static class ServiceCollectionExtensions
 {
-  public static ServiceCollection AddTransitApiHttpClient(
-    this ServiceCollection services,
+  public static IServiceCollection AddTransitApiHttpClient(
+    this IServiceCollection services,
     string baseUrl, string apiKey)
   {
     services.AddHttpClient<TransitApiClient>(client =>

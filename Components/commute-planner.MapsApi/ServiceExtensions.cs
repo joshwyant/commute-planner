@@ -11,8 +11,8 @@ public static class ServiceExtensions
       return base.SendAsync(request, cancellationToken);
     }
   }
-  public static ServiceCollection AddMapsApiHttpClient(
-    this ServiceCollection services, string baseUrl,
+  public static IServiceCollection AddMapsApiHttpClient(
+    this IServiceCollection services, string baseUrl,
     string apiKey)
   {
     services.AddHttpClient<MapsApiClient>(client =>

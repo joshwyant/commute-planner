@@ -1,8 +1,16 @@
 ﻿using System.Net;
 using commute_planner.MapsApi;
 using commute_planner.TransitApi;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add service defaults & Aspire components.
+builder.AddServiceDefaults();
+builder.AddRabbitMQ("messaging");
 
 var cts = new CancellationTokenSource();
 Console.CancelKeyPress += (sender, eventArgs) =>
@@ -10,8 +18,6 @@ Console.CancelKeyPress += (sender, eventArgs) =>
   Console.WriteLine("Cancel keys pressed, exiting.");
   cts.Cancel();
 };
-
-var services = new ServiceCollection();
 
 var googleApiKey = Environment.GetEnvironmentVariable("GOOGLE_API_KEY") ??
                    throw new InvalidOperationException(
@@ -29,19 +35,23 @@ var transitBaseUrl = Environment.GetEnvironmentVariable("TRANSIT_BASE_URL")
                     ?? "https://api.511.org/transit/";
 
 // Add HTTP client configurations for our Maps and Transit APIs
-services.AddMapsApiHttpClient(googleBaseUrl, googleApiKey);
-services.AddTransitApiHttpClient(transitBaseUrl, transitApiKey);
+builder.Services.AddMapsApiHttpClient(googleBaseUrl, googleApiKey);
+builder.Services.AddTransitApiHttpClient(transitBaseUrl, transitApiKey);
 
 // Add a console logger.
-services.AddLogging(configure => configure.AddConsole());
+builder.Services.AddLogging(configure => configure.AddConsole());
 
-var serviceProvider = services.BuildServiceProvider();
-using var scope = serviceProvider.CreateScope();
-var scopedServices = scope.ServiceProvider;
+// Add a hosted service
+// builder.Services.AddHostedService<DataFetcherService>();
 
-var log = scopedServices.GetService<ILogger<Program>>()!;
-var mapsApi = scopedServices.GetService<MapsApiClient>();
-var transitApi = scopedServices.GetService<TransitApiClient>();
+var app = builder.Build();
+
+// When running hosted services
+// await app.StartAsync(cts.Token);
+
+var log = app.Services.GetService<ILogger<Program>>()!;
+var mapsApi = app.Services.GetService<MapsApiClient>();
+var transitApi = app.Services.GetService<TransitApiClient>();
 
 const int apiInterval = 60000; // Once per minute
 var backoff = apiInterval;
@@ -54,9 +64,12 @@ while (!cts.IsCancellationRequested)
     var mapsResult = await mapsApi.ComputeRoutes(new ComputeRoutesRequest(
       new Waypoint() { Address = "345 Spear St. San Francisco, CA 94105" },
       new Waypoint() { Address = "415 Mission St, San Francisco, CA 94105" }));
-    log.LogInformation(String.Join("\n",
-      mapsResult?.Routes?.Select(r =>
-        $"(DistanceMeters: {r.DistanceMeters}, Duration: {r.Duration})")?.ToArray() ?? []));
+
+    if (mapsResult is not null && mapsResult.Routes is not null)
+    foreach (var r in mapsResult.Routes)
+    {
+      log.LogInformation($"Maps result: (DistanceMeters: {r.DistanceMeters}, Duration: {r.Duration})");
+    }
   }
   catch (Exception e)
   {
@@ -109,8 +122,6 @@ while (!cts.IsCancellationRequested)
     {
       log.LogInformation($"Line: {line}");
     }
-    
-    
     
     backoff = apiInterval; // reset to normal interval
   }
