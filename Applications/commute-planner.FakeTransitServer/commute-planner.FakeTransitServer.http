@@ -1,0 +1,6 @@
+@commute_planner.FakeTransitServer_HostAddress = http://localhost:5273
+
+GET {{commute_planner.FakeTransitServer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

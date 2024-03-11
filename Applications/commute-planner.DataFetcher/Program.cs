@@ -22,7 +22,8 @@ var transitApiKey = Environment.GetEnvironmentVariable("TRANSIT_API_KEY") ??
                       "Missing transit API key.");
 
 var googleBaseUrl = Environment.GetEnvironmentVariable("GOOGLE_BASE_URL")
-                    ?? "https://routes.googleapis.com/";
+                    ?? "http://localhost:5043";
+                    //?? "https://routes.googleapis.com/";
 
 var transitBaseUrl = Environment.GetEnvironmentVariable("TRANSIT_BASE_URL")
                     ?? "https://api.511.org/transit/";

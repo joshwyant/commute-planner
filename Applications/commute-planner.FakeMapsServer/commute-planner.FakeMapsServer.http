@@ -1,0 +1,17 @@
+@commute_planner.FakeMapsServer_HostAddress = http://localhost:5043
+
+POST {{commute_planner.FakeMapsServer_HostAddress}}/directions/v2:computeRoutes/
+Content-Type: application/json
+X-Goog-Api-Key: fjkl;fjds;lkajfkldsja
+X-Goog-FieldMask: routes.distanceMeters,routes.duration
+
+{
+  "origin": {
+    "address": "Starting Point Address"
+  },
+  "destination": {
+    "address": "Destination Point Address"
+  }
+}
+
+###

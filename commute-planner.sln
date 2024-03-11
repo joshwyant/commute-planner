@@ -26,6 +26,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.DataFetcher
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.DataProcessor", "Applications\commute-planner.DataProcessor\commute-planner.DataProcessor.csproj", "{53B290D5-74A3-41BF-AF86-D78D0FA43ABD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.FakeMapsServer", "Applications\commute-planner.FakeMapsServer\commute-planner.FakeMapsServer.csproj", "{3BC06939-8C33-42AE-8D21-FF7D5B7E025A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.FakeTransitServer", "Applications\commute-planner.FakeTransitServer\commute-planner.FakeTransitServer.csproj", "{4E26925B-0B45-4E4A-BFF7-F786604C2760}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +72,14 @@ Global
 		{53B290D5-74A3-41BF-AF86-D78D0FA43ABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53B290D5-74A3-41BF-AF86-D78D0FA43ABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53B290D5-74A3-41BF-AF86-D78D0FA43ABD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BC06939-8C33-42AE-8D21-FF7D5B7E025A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BC06939-8C33-42AE-8D21-FF7D5B7E025A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BC06939-8C33-42AE-8D21-FF7D5B7E025A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BC06939-8C33-42AE-8D21-FF7D5B7E025A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E26925B-0B45-4E4A-BFF7-F786604C2760}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E26925B-0B45-4E4A-BFF7-F786604C2760}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E26925B-0B45-4E4A-BFF7-F786604C2760}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E26925B-0B45-4E4A-BFF7-F786604C2760}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,5 +97,7 @@ Global
 		{157B6409-90CA-4F2E-AD58-27F4C08262A7} = {968BA1D3-D9D7-44EA-A0CE-B57BF0501287}
 		{607A4DFF-A78C-44E0-9F56-F8C42757BEA2} = {41523A73-476B-432D-9002-F37CD776B48C}
 		{53B290D5-74A3-41BF-AF86-D78D0FA43ABD} = {41523A73-476B-432D-9002-F37CD776B48C}
+		{3BC06939-8C33-42AE-8D21-FF7D5B7E025A} = {41523A73-476B-432D-9002-F37CD776B48C}
+		{4E26925B-0B45-4E4A-BFF7-F786604C2760} = {41523A73-476B-432D-9002-F37CD776B48C}
 	EndGlobalSection
 EndGlobal
