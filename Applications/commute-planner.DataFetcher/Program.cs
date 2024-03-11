@@ -22,7 +22,7 @@ var transitApiKey = Environment.GetEnvironmentVariable("TRANSIT_API_KEY") ??
                       "Missing transit API key.");
 
 var googleBaseUrl = Environment.GetEnvironmentVariable("GOOGLE_BASE_URL")
-                    ?? "https://routes.googleapis.com/directions/";
+                    ?? "https://routes.googleapis.com/";
 
 var transitBaseUrl = Environment.GetEnvironmentVariable("TRANSIT_BASE_URL")
                     ?? "https://api.511.org/transit/";
@@ -51,8 +51,8 @@ while (!cts.IsCancellationRequested)
   try
   {
     var mapsResult = await mapsApi.ComputeRoutes(new ComputeRoutesRequest(
-      new Waypoint() { Address = "123 Main St." },
-      new Waypoint() { Address = "555 Maple Ave." }));
+      new Waypoint() { Address = "345 Spear St. San Francisco, CA 94105" },
+      new Waypoint() { Address = "415 Mission St, San Francisco, CA 94105" }));
     log.LogInformation(String.Join("\n",
       mapsResult?.Routes?.Select(r =>
         $"(DistanceMeters: {r.DistanceMeters}, Duration: {r.Duration})")?.ToArray() ?? []));
@@ -66,8 +66,51 @@ while (!cts.IsCancellationRequested)
   {
     // Read some more data
     log.LogInformation("About to read some transit data.");
-    var transitResult = await transitApi.Lines("SF", cts.Token);
-    log.LogInformation($"Transit response: {transitResult}");
+    
+    log.LogInformation("Read from Vehicle monitoring API:");
+    var vehicleMonitoringResult =
+      await transitApi.VehicleMonitoring("SF", "2009", cts.Token);
+    log.LogInformation($"Transit response: {vehicleMonitoringResult}");
+    if (vehicleMonitoringResult?.OnwardCalls is not null)
+    foreach (var call in vehicleMonitoringResult.OnwardCalls)
+    {
+      log.LogInformation($"Onward call: {call}");
+    }
+
+    // log.LogInformation("Read from Stops API:");
+    // var stopsResult = await transitApi.Stops("SF", cts.Token);
+    // foreach (var stop in stopsResult)
+    // {
+    //   log.LogInformation($"Stop: {stop}");
+    // }
+    
+    log.LogInformation("Read from StopPlaces API:");
+    var stopPlacesResult =
+      await transitApi.StopPlaces("SF", "15184", cts.Token);
+    log.LogInformation($"Stop place: {stopPlacesResult}");
+    // if (stopPlacesResult is not null)
+    // foreach (var place in stopPlacesResult)
+    // {
+    //   log.LogInformation($"Stop place: {place}");
+    // }
+    
+    log.LogInformation("Read from Stop Monitoring API:");
+    var stopMonitoringResult =
+      await transitApi.StopMonitoring("SF", "15184", cts.Token);
+    foreach (var visit in stopMonitoringResult)
+    {
+      log.LogInformation($"Visit: {visit}");
+    }
+    
+    log.LogInformation("Read from Lines API:");
+    var linesResult = await transitApi.Lines("SF", cts.Token);
+    foreach (var line in linesResult)
+    {
+      log.LogInformation($"Line: {line}");
+    }
+    
+    
+    
     backoff = apiInterval; // reset to normal interval
   }
   catch (HttpRequestException ex)

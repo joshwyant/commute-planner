@@ -5,8 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace commute_planner.TransitApi;
 
 /// <summary>
-/// Supports HttpClient for the Transit API by applying the given API key, as
-/// well as requesting the JSON data format.
+/// Supports HttpClient for the Transit API by applying the given API key
 /// </summary>
 /// <param name="apiKey">The Transit API key.</param>
 public class TransitApiHttpMessageHandler(string apiKey)
@@ -22,7 +21,6 @@ public class TransitApiHttpMessageHandler(string apiKey)
     // Modify query string
     var query = HttpUtility.ParseQueryString(builder.Query);
     query["api_key"] = ApiKey;
-    query["format"] = "json";
     builder.Query = query.ToString();
 
     request.RequestUri = builder.Uri;

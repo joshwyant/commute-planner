@@ -6,14 +6,20 @@ namespace commute_planner.MapsApi;
 
 public class MapsApiClient(HttpClient httpClient)
 {
+  public HttpClient HttpClient { get; } = httpClient;
   public async Task<ComputeRoutesResponse?> ComputeRoutes(
     ComputeRoutesRequest request, CancellationToken token = default)
   {
-    var response = await httpClient.PostAsJsonAsync<ComputeRoutesRequest>(
-      "v2:computeRoutes", request, JsonSerializerOptions.Default, token);
+    var content = JsonContent.Create(request);
+    content.Headers.Add("X-Goog-FieldMask",
+      "routes.distanceMeters,routes.duration");
 
-    return await response.Content.ReadFromJsonAsync<ComputeRoutesResponse>(
-      token);
+    var response =
+      await HttpClient.PostAsync("/directions/v2:computeRoutes", content,
+        token);
+
+    var json = await response.Content.ReadAsStringAsync(token);
+    return JsonSerializer.Deserialize<ComputeRoutesResponse>(json);
   }
 }
 
