@@ -123,6 +123,14 @@ while (!cts.IsCancellationRequested)
       log.LogInformation($"Line: {line}");
     }
     
+    log.LogInformation("Read from Timetabled Stop Visit API:");
+    var timetabledStopVisitsResult =
+      await transitApi.ScheduledDeparturesAtStop("SF", "16992", cts.Token);
+    foreach (var visit in timetabledStopVisitsResult)
+    {
+      log.LogInformation($"Visit: {visit}");
+    }
+    
     backoff = apiInterval; // reset to normal interval
   }
   catch (HttpRequestException ex)
