@@ -1,4 +1,3 @@
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using commute_planner.FakeMapsServer;
 
@@ -20,13 +19,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// ReSharper disable once UnusedParameter.Local
 app.MapPost("/directions/v2:computeRoutes", (ComputeRoutesRequest request) =>
     {
         var m = Random.Shared.Next(15000);
         var kph = Random.Shared.Next(20, 80);
         var mps = kph * 1000 / 3600;
         var t = m / mps;
-    return new ComputeRoutesResponse(new[]{new MapsRoute(m, $"{t}s")});
+    return new ComputeRoutesResponse([new MapsRoute(m, $"{t}s")]);
 })
 .WithName("ComputeRoutes")
 .WithOpenApi();
@@ -50,6 +50,7 @@ namespace commute_planner.FakeMapsServer
         public string? Duration { get; set; } = duration;
     }
 
+    // ReSharper disable ClassNeverInstantiated.Global
     public class ComputeRoutesRequest(Waypoint origin, Waypoint destination)
     {
         [JsonPropertyName("origin")] public Waypoint Origin { get; } = origin;
@@ -65,9 +66,5 @@ namespace commute_planner.FakeMapsServer
     {
         [JsonPropertyName("address")] public string? Address { get; set; }
     }
-
-    public enum RoutingPreference
-    {
-        [JsonPropertyName("TRAFFIC_AWARE")] TrafficAware
-    }
+    // ReSharper restore ClassNeverInstantiated.Global
 }

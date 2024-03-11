@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Components\commute-planner.MapsApi\commute-planner.MapsApi.csproj" />
+    <ProjectReference Include="..\..\Components\commute-planner.MapsApiClient\commute-planner.MapsApiClient.csproj" />
     <ProjectReference Include="..\..\Components\commute-planner.ServiceDefaults\commute-planner.ServiceDefaults.csproj" />
-    <ProjectReference Include="..\..\Components\commute-planner.TransitApi\commute-planner.TransitApi.csproj" />
+    <ProjectReference Include="..\..\Components\commute-planner.TransitApiClient\commute-planner.TransitApiClient.csproj" />
   </ItemGroup>
 
   <ItemGroup>

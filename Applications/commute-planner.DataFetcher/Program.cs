@@ -1,10 +1,6 @@
 ﻿using System.Net;
 using commute_planner.MapsApi;
 using commute_planner.TransitApi;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -14,21 +14,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Application
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Components", "Components", "{968BA1D3-D9D7-44EA-A0CE-B57BF0501287}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.MapsApi", "Components\commute-planner.MapsApi\commute-planner.MapsApi.csproj", "{B52F9072-3F60-4257-9BF4-5ABFCA149A0D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.MapsApiClient", "Components\commute-planner.MapsApiClient\commute-planner.MapsApiClient.csproj", "{B52F9072-3F60-4257-9BF4-5ABFCA149A0D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Databases", "Databases", "{121ADA73-3F72-4A6E-B493-9E3D27EDBE8A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.CommuteDatabase", "Databases\commute-planner.CommuteDatabase\commute-planner.CommuteDatabase.csproj", "{801DF0F7-0C52-487D-BD63-9E2B9335C712}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.TransitApi", "Components\commute-planner.TransitApi\commute-planner.TransitApi.csproj", "{157B6409-90CA-4F2E-AD58-27F4C08262A7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.TransitApiClient", "Components\commute-planner.TransitApiClient\commute-planner.TransitApiClient.csproj", "{157B6409-90CA-4F2E-AD58-27F4C08262A7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.DataFetcher", "Applications\commute-planner.DataFetcher\commute-planner.DataFetcher.csproj", "{607A4DFF-A78C-44E0-9F56-F8C42757BEA2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.DataProcessor", "Applications\commute-planner.DataProcessor\commute-planner.DataProcessor.csproj", "{53B290D5-74A3-41BF-AF86-D78D0FA43ABD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.FakeMapsServer", "Applications\commute-planner.FakeMapsServer\commute-planner.FakeMapsServer.csproj", "{3BC06939-8C33-42AE-8D21-FF7D5B7E025A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestSupport", "TestSupport", "{C3645AA3-F625-4A70-980F-8E193EC72243}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.FakeTransitServer", "Applications\commute-planner.FakeTransitServer\commute-planner.FakeTransitServer.csproj", "{4E26925B-0B45-4E4A-BFF7-F786604C2760}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.FakeMapsServer", "TestSupport\commute-planner.FakeMapsServer\commute-planner.FakeMapsServer.csproj", "{B4A838C3-B6F7-4F63-8ACE-EBF5FEDF95F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.FakeTransitServer", "TestSupport\commute-planner.FakeTransitServer\commute-planner.FakeTransitServer.csproj", "{F012F00B-4DCF-49D5-9405-C917544BA831}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -72,14 +74,14 @@ Global
 		{53B290D5-74A3-41BF-AF86-D78D0FA43ABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53B290D5-74A3-41BF-AF86-D78D0FA43ABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53B290D5-74A3-41BF-AF86-D78D0FA43ABD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3BC06939-8C33-42AE-8D21-FF7D5B7E025A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3BC06939-8C33-42AE-8D21-FF7D5B7E025A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3BC06939-8C33-42AE-8D21-FF7D5B7E025A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3BC06939-8C33-42AE-8D21-FF7D5B7E025A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4E26925B-0B45-4E4A-BFF7-F786604C2760}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4E26925B-0B45-4E4A-BFF7-F786604C2760}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4E26925B-0B45-4E4A-BFF7-F786604C2760}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4E26925B-0B45-4E4A-BFF7-F786604C2760}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4A838C3-B6F7-4F63-8ACE-EBF5FEDF95F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4A838C3-B6F7-4F63-8ACE-EBF5FEDF95F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4A838C3-B6F7-4F63-8ACE-EBF5FEDF95F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4A838C3-B6F7-4F63-8ACE-EBF5FEDF95F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F012F00B-4DCF-49D5-9405-C917544BA831}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F012F00B-4DCF-49D5-9405-C917544BA831}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F012F00B-4DCF-49D5-9405-C917544BA831}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F012F00B-4DCF-49D5-9405-C917544BA831}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -97,7 +99,7 @@ Global
 		{157B6409-90CA-4F2E-AD58-27F4C08262A7} = {968BA1D3-D9D7-44EA-A0CE-B57BF0501287}
 		{607A4DFF-A78C-44E0-9F56-F8C42757BEA2} = {41523A73-476B-432D-9002-F37CD776B48C}
 		{53B290D5-74A3-41BF-AF86-D78D0FA43ABD} = {41523A73-476B-432D-9002-F37CD776B48C}
-		{3BC06939-8C33-42AE-8D21-FF7D5B7E025A} = {41523A73-476B-432D-9002-F37CD776B48C}
-		{4E26925B-0B45-4E4A-BFF7-F786604C2760} = {41523A73-476B-432D-9002-F37CD776B48C}
+		{B4A838C3-B6F7-4F63-8ACE-EBF5FEDF95F6} = {C3645AA3-F625-4A70-980F-8E193EC72243}
+		{F012F00B-4DCF-49D5-9405-C917544BA831} = {C3645AA3-F625-4A70-980F-8E193EC72243}
 	EndGlobalSection
 EndGlobal

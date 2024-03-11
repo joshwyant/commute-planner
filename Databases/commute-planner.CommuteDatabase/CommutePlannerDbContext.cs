@@ -6,9 +6,11 @@ namespace commute_planner.CommuteDatabase;
 public class CommutePlannerDbContext(DbContextOptions options)
   : DbContext(options)
 {
+  // ReSharper disable PropertyCanBeMadeInitOnly.Global
   public DbSet<DrivingRoute> DrivingRoutes { get; set; } = null!;
   public DbSet<TransitRoute> TransitRoutes { get; set; } = null!;
   public DbSet<MatchingRoute> MatchingRoutes { get; set; } = null!;
+  // ReSharper restore PropertyCanBeMadeInitOnly.Global
 }
 
 public class DrivingRoute

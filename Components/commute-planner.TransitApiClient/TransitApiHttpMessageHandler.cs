@@ -1,6 +1,4 @@
-using System.Net;
 using System.Web;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace commute_planner.TransitApi;
 
