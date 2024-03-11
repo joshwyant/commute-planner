@@ -12,7 +12,6 @@ var apiService = builder
 builder.AddProject<Projects.commute_planner_Web>("webfrontend")
     .WithReference(apiService);
 
-// Hopefully this deploys?
 builder.AddProject<Projects.commute_planner_DataFetcher>("datafetcher")
   .WithReference(messaging);
 
