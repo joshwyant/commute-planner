@@ -21,20 +21,16 @@ var summaries = new[]
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+app.MapGet("/transit/lines", () => File.ReadAllText("Resources/lines.json"));
+app.MapGet("/transit/StopMonitoring",
+    () => File.ReadAllText("Resources/StopMonitoring.json"));
+app.MapGet("/transit/stopplaces",
+    () => File.ReadAllText("Resources/stopplaces.json"));
+app.MapGet("/transit/stops", () => File.ReadAllText("Resources/stops.json"));
+app.MapGet("/transit/stoptimetable",
+    () => File.ReadAllText("Resources/stoptimetable.json"));
+app.MapGet("/transit/VehicleMonitoring",
+    () => File.ReadAllText("Resources/VehicleMonitoring.xml"));
 
 app.Run();
 

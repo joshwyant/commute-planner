@@ -28,7 +28,8 @@ var googleBaseUrl = Environment.GetEnvironmentVariable("GOOGLE_BASE_URL")
                     //?? "https://routes.googleapis.com/";
 
 var transitBaseUrl = Environment.GetEnvironmentVariable("TRANSIT_BASE_URL")
-                    ?? "https://api.511.org/transit/";
+                     ?? "http://localhost:5273/transit/";
+                    //?? "https://api.511.org/transit/";
 
 // Add HTTP client configurations for our Maps and Transit APIs
 builder.Services.AddMapsApiHttpClient(googleBaseUrl, googleApiKey);

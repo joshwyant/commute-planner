@@ -1,6 +1,24 @@
-@commute_planner.FakeTransitServer_HostAddress = http://localhost:5273
+GET http://localhost:5273/transit/stoptimetable?format=json&operatorref=SF&monitoringref=15665&api_key={{TRANSIT_API_KEY}}
+Accept: application/json
 
-GET {{commute_planner.FakeTransitServer_HostAddress}}/weatherforecast/
+###
+GET http://localhost:5273/transit/lines?api_key={{TRANSIT_API_KEY}}&operator_id=SF&format=json
+Accept: application/json
+
+###
+GET http://localhost:5273/transit/VehicleMonitoring?api_key={{TRANSIT_API_KEY}}&agency=SF&vehicleID=2110&format=xml
+Accept: application/xml
+
+###
+GET http://localhost:5273/transit/StopMonitoring?api_key={{TRANSIT_API_KEY}}&stopcode=15665&agency=SF&format=json
+Accept: application/json
+
+###
+GET http://localhost:5273/transit/stopplaces?api_key={{TRANSIT_API_KEY}}&stop_id=15665&operator_id=SF&format=json
+Accept: application/json
+
+###
+GET http://localhost:5273/transit/stops?api_key={{TRANSIT_API_KEY}}&operator_id=SF&format=json
 Accept: application/json
 
 ###
