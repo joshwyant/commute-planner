@@ -1,0 +1,181 @@
+﻿{
+  "Siri": {
+    "ServiceDelivery": {
+      "ResponseTimestamp": "2024-03-11T18:09:35-07:00",
+      "Status": true,
+      "StopTimetableDelivery": {
+        "ResponseTimestamp": "2024-03-11T18:09:35-07:00",
+        "TimetabledStopVisit": [
+          {
+            "RecordedAtTime": "2024-03-01T21:05:13-07:00",
+            "MonitoringRef": "15665",
+            "TargetedVehicleJourney": {
+              "LineRef": "37",
+              "DirectionRef": "IB",
+              "DatedVehicleJourneyRef": "11495614_M41",
+              "PublishedLineName": "37",
+              "OperatorRef": "SF",
+              "OriginRef": "16086",
+              "OriginName": "Parkridge Dr & Burnett Ave",
+              "DestinationRef": "15711",
+              "DestinationName": "Masonic Ave & Haight St",
+              "VehicleJourneyName": "Masonic + Haight",
+              "TargetedCall": {
+                "StopPointRef": "15665",
+                "StopPointName": "Market St & Castro St",
+                "DestinationDisplay": "Masonic + Haight",
+                "VisitNumber": "1",
+                "AimedArrivalTime": "2024-03-11T18:11:33-07:00",
+                "AimedDepartureTime": "2024-03-11T18:11:33-07:00"
+              }
+            }
+          },
+          {
+            "RecordedAtTime": "2024-03-01T21:05:13-07:00",
+            "MonitoringRef": "15665",
+            "TargetedVehicleJourney": {
+              "LineRef": "LBUS",
+              "DirectionRef": "IB",
+              "DatedVehicleJourneyRef": "11506996_M41",
+              "PublishedLineName": "LBUS",
+              "OperatorRef": "SF",
+              "OriginRef": "16932",
+              "OriginName": "Wawona/46th Ave /Sf Zoo",
+              "DestinationRef": "16497",
+              "DestinationName": "Steuart St & Mission St",
+              "VehicleJourneyName": "Ferry Plaza",
+              "TargetedCall": {
+                "StopPointRef": "15665",
+                "StopPointName": "Market St & Castro St",
+                "DestinationDisplay": "Ferry Plaza",
+                "VisitNumber": "1",
+                "AimedArrivalTime": "2024-03-11T18:26:33-07:00",
+                "AimedDepartureTime": "2024-03-11T18:26:33-07:00"
+              }
+            }
+          },
+          {
+            "RecordedAtTime": "2024-03-01T21:05:13-07:00",
+            "MonitoringRef": "15665",
+            "TargetedVehicleJourney": {
+              "LineRef": "37",
+              "DirectionRef": "IB",
+              "DatedVehicleJourneyRef": "11495613_M41",
+              "PublishedLineName": "37",
+              "OperatorRef": "SF",
+              "OriginRef": "16086",
+              "OriginName": "Parkridge Dr & Burnett Ave",
+              "DestinationRef": "15711",
+              "DestinationName": "Masonic Ave & Haight St",
+              "VehicleJourneyName": "Masonic + Haight",
+              "TargetedCall": {
+                "StopPointRef": "15665",
+                "StopPointName": "Market St & Castro St",
+                "DestinationDisplay": "Masonic + Haight",
+                "VisitNumber": "1",
+                "AimedArrivalTime": "2024-03-11T18:31:33-07:00",
+                "AimedDepartureTime": "2024-03-11T18:31:33-07:00"
+              }
+            }
+          },
+          {
+            "RecordedAtTime": "2024-03-01T21:05:13-07:00",
+            "MonitoringRef": "15665",
+            "TargetedVehicleJourney": {
+              "LineRef": "37",
+              "DirectionRef": "IB",
+              "DatedVehicleJourneyRef": "11495612_M41",
+              "PublishedLineName": "37",
+              "OperatorRef": "SF",
+              "OriginRef": "16086",
+              "OriginName": "Parkridge Dr & Burnett Ave",
+              "DestinationRef": "15711",
+              "DestinationName": "Masonic Ave & Haight St",
+              "VehicleJourneyName": "Masonic + Haight",
+              "TargetedCall": {
+                "StopPointRef": "15665",
+                "StopPointName": "Market St & Castro St",
+                "DestinationDisplay": "Masonic + Haight",
+                "VisitNumber": "1",
+                "AimedArrivalTime": "2024-03-11T18:51:33-07:00",
+                "AimedDepartureTime": "2024-03-11T18:51:33-07:00"
+              }
+            }
+          },
+          {
+            "RecordedAtTime": "2024-03-01T21:05:13-07:00",
+            "MonitoringRef": "15665",
+            "TargetedVehicleJourney": {
+              "LineRef": "37",
+              "DirectionRef": "IB",
+              "DatedVehicleJourneyRef": "11495611_M41",
+              "PublishedLineName": "37",
+              "OperatorRef": "SF",
+              "OriginRef": "16086",
+              "OriginName": "Parkridge Dr & Burnett Ave",
+              "DestinationRef": "15711",
+              "DestinationName": "Masonic Ave & Haight St",
+              "VehicleJourneyName": "Masonic + Haight",
+              "TargetedCall": {
+                "StopPointRef": "15665",
+                "StopPointName": "Market St & Castro St",
+                "DestinationDisplay": "Masonic + Haight",
+                "VisitNumber": "1",
+                "AimedArrivalTime": "2024-03-11T19:10:33-07:00",
+                "AimedDepartureTime": "2024-03-11T19:10:33-07:00"
+              }
+            }
+          },
+          {
+            "RecordedAtTime": "2024-03-01T21:05:13-07:00",
+            "MonitoringRef": "15665",
+            "TargetedVehicleJourney": {
+              "LineRef": "37",
+              "DirectionRef": "IB",
+              "DatedVehicleJourneyRef": "11495610_M41",
+              "PublishedLineName": "37",
+              "OperatorRef": "SF",
+              "OriginRef": "16086",
+              "OriginName": "Parkridge Dr & Burnett Ave",
+              "DestinationRef": "15711",
+              "DestinationName": "Masonic Ave & Haight St",
+              "VehicleJourneyName": "Masonic + Haight",
+              "TargetedCall": {
+                "StopPointRef": "15665",
+                "StopPointName": "Market St & Castro St",
+                "DestinationDisplay": "Masonic + Haight",
+                "VisitNumber": "1",
+                "AimedArrivalTime": "2024-03-11T19:40:33-07:00",
+                "AimedDepartureTime": "2024-03-11T19:40:33-07:00"
+              }
+            }
+          },
+          {
+            "RecordedAtTime": "2024-03-01T21:05:13-07:00",
+            "MonitoringRef": "15665",
+            "TargetedVehicleJourney": {
+              "LineRef": "37",
+              "DirectionRef": "IB",
+              "DatedVehicleJourneyRef": "11495609_M41",
+              "PublishedLineName": "37",
+              "OperatorRef": "SF",
+              "OriginRef": "16086",
+              "OriginName": "Parkridge Dr & Burnett Ave",
+              "DestinationRef": "15711",
+              "DestinationName": "Masonic Ave & Haight St",
+              "VehicleJourneyName": "Masonic + Haight",
+              "TargetedCall": {
+                "StopPointRef": "15665",
+                "StopPointName": "Market St & Castro St",
+                "DestinationDisplay": "Masonic + Haight",
+                "VisitNumber": "1",
+                "AimedArrivalTime": "2024-03-11T20:09:33-07:00",
+                "AimedDepartureTime": "2024-03-11T20:09:33-07:00"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

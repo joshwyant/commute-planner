@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Siri xmlns:siri="http://www.siri.org.uk/siri" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.4"
+      schemaLocation="http://www.kizoom.com/standards/siri/schema/1.4/siri.xsd">
+    <ServiceDelivery>
+        <ResponseTimestamp>2024-03-12T01:07:37Z</ResponseTimestamp>
+        <ProducerRef>SF</ProducerRef>
+        <Status>true</Status>
+        <VehicleMonitoringDelivery version="1.4">
+            <ResponseTimestamp>2024-03-12T01:07:37Z</ResponseTimestamp>
+            <VehicleActivity>
+                <RecordedAtTime>2024-03-12T01:07:34Z</RecordedAtTime>
+                <ValidUntilTime></ValidUntilTime>
+                <MonitoredVehicleJourney>
+                    <LineRef>T</LineRef>
+                    <DirectionRef>S</DirectionRef>
+                    <FramedVehicleJourneyRef>
+                        <DataFrameRef>2024-03-11</DataFrameRef>
+                        <DatedVehicleJourneyRef>11510913_M41</DatedVehicleJourneyRef>
+                    </FramedVehicleJourneyRef>
+                    <PublishedLineName>THIRD</PublishedLineName>
+                    <OperatorRef>SF</OperatorRef>
+                    <OriginRef>17876</OriginRef>
+                    <OriginName>Chinatown - Rose Pak Station</OriginName>
+                    <DestinationRef>17396</DestinationRef>
+                    <DestinationName>Bayshore Blvd &amp; Sunnydale Ave</DestinationName>
+                    <Monitored>true</Monitored>
+                    <InCongestion/>
+                    <VehicleLocation>
+                        <Longitude>-122.391411</Longitude>
+                        <Latitude>37.7330055</Latitude>
+                    </VehicleLocation>
+                    <Bearing>195.0000000000</Bearing>
+                    <Occupancy>seatsAvailable</Occupancy>
+                    <VehicleRef>2110</VehicleRef>
+                    <MonitoredCall>
+                        <StopPointRef>17346</StopPointRef>
+                        <StopPointName>Third Street &amp; Williams Ave</StopPointName>
+                        <VehicleLocationAtStop></VehicleLocationAtStop>
+                        <VehicleAtStop></VehicleAtStop>
+                        <DestinationDisplay>Sunnydale</DestinationDisplay>
+                        <AimedArrivalTime>2024-03-12T01:13:27Z</AimedArrivalTime>
+                        <ExpectedArrivalTime>2024-03-12T01:09:20Z</ExpectedArrivalTime>
+                        <AimedDepartureTime>2024-03-12T01:13:27Z</AimedDepartureTime>
+                        <ExpectedDepartureTime/>
+                    </MonitoredCall>
+                    <OnwardCalls>
+                        <OnwardCall>
+                            <StopPointRef>17344</StopPointRef>
+                            <StopPointName>Third Street &amp; Carroll Ave</StopPointName>
+                            <DestinationDisplay>Sunnydale</DestinationDisplay>
+                            <AimedArrivalTime>2024-03-12T01:15:23Z</AimedArrivalTime>
+                            <ExpectedArrivalTime>2024-03-12T01:11:29Z</ExpectedArrivalTime>
+                            <AimedDepartureTime>2024-03-12T01:15:23Z</AimedDepartureTime>
+                            <ExpectedDepartureTime/>
+                        </OnwardCall>
+                        <OnwardCall>
+                            <StopPointRef>17342</StopPointRef>
+                            <StopPointName>Third Street/Gilman/Paul</StopPointName>
+                            <DestinationDisplay>Sunnydale</DestinationDisplay>
+                            <AimedArrivalTime>2024-03-12T01:17:00Z</AimedArrivalTime>
+                            <ExpectedArrivalTime>2024-03-12T01:13:01Z</ExpectedArrivalTime>
+                            <AimedDepartureTime>2024-03-12T01:17:00Z</AimedDepartureTime>
+                            <ExpectedDepartureTime/>
+                        </OnwardCall>
+                        <OnwardCall>
+                            <StopPointRef>17394</StopPointRef>
+                            <StopPointName>Third Street &amp; Le Conte Ave</StopPointName>
+                            <DestinationDisplay>Sunnydale</DestinationDisplay>
+                            <AimedArrivalTime>2024-03-12T01:18:28Z</AimedArrivalTime>
+                            <ExpectedArrivalTime>2024-03-12T01:14:42Z</ExpectedArrivalTime>
+                            <AimedDepartureTime>2024-03-12T01:18:28Z</AimedDepartureTime>
+                            <ExpectedDepartureTime/>
+                        </OnwardCall>
+                        <OnwardCall>
+                            <StopPointRef>17395</StopPointRef>
+                            <StopPointName>Bayshore Blvd &amp; Blanken Ave</StopPointName>
+                            <DestinationDisplay>Sunnydale</DestinationDisplay>
+                            <AimedArrivalTime>2024-03-12T01:21:24Z</AimedArrivalTime>
+                            <ExpectedArrivalTime>2024-03-12T01:17:44Z</ExpectedArrivalTime>
+                            <AimedDepartureTime>2024-03-12T01:21:24Z</AimedDepartureTime>
+                            <ExpectedDepartureTime/>
+                        </OnwardCall>
+                        <OnwardCall>
+                            <StopPointRef>17396</StopPointRef>
+                            <StopPointName>Bayshore Blvd &amp; Sunnydale Ave</StopPointName>
+                            <DestinationDisplay>Sunnydale</DestinationDisplay>
+                            <AimedArrivalTime>2024-03-12T01:23:00Z</AimedArrivalTime>
+                            <ExpectedArrivalTime>2024-03-12T01:20:30Z</ExpectedArrivalTime>
+                            <AimedDepartureTime>2024-03-12T01:23:00Z</AimedDepartureTime>
+                            <ExpectedDepartureTime/>
+                        </OnwardCall>
+                    </OnwardCalls>
+                </MonitoredVehicleJourney>
+            </VehicleActivity>
+        </VehicleMonitoringDelivery>
+    </ServiceDelivery>
+</Siri>
