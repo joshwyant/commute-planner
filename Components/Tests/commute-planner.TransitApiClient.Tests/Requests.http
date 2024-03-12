@@ -1,0 +1,24 @@
+GET https://api.511.org/transit/stoptimetable?format=json&operatorref=SF&monitoringref=15665&api_key={{TRANSIT_API_KEY}}
+Accept: application/json
+
+###
+GET https://api.511.org/transit/lines?api_key={{TRANSIT_API_KEY}}&operator_id=SF&format=json
+Accept: application/json
+
+###
+GET https://api.511.org/transit/VehicleMonitoring?api_key={{TRANSIT_API_KEY}}&agency=SF&vehicleID=2110&format=xml
+Accept: application/xml
+
+###
+https://api.511.org/transit/StopMonitoring?api_key={{TRANSIT_API_KEY}}&stopcode=15665&agency=SF&format=json
+Accept: application/json
+
+###
+GET https://api.511.org/transit/stopplaces?api_key={{TRANSIT_API_KEY}}&stop_id=15665&operator_id=SF&format=json
+Accept: application/json
+
+###
+GET https://api.511.org/transit/stops?api_key={{TRANSIT_API_KEY}}&operator_id=SF&format=json
+Accept: application/json
+
+###

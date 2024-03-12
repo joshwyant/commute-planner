@@ -1,4 +1,4 @@
-namespace commute_planner.MapsApiClient.Tests;
+namespace commute_planner.TransitApiClient;
 
 public class Tests
 {

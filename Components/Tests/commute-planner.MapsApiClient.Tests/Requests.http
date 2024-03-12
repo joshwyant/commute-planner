@@ -1,0 +1,15 @@
+POST https://routes.googleapis.com/directions/v2:computeRoutes
+Content-Type: application/json
+X-Goog-Api-Key: {{GOOGLE_API_KEY}}
+X-Goog-Fieldmask: routes.distanceMeters,routes.duration
+
+{
+  "origin": {
+    "address": "345 Spear St San Francisco, CA 94105"
+  },
+  "destination": {
+    "address": "415 Mission St, San Francisco, CA 94105"
+  }
+}
+
+###

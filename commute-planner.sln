@@ -36,6 +36,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{920289AD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.MapsApiClient.Tests", "Components\Tests\commute-planner.MapsApiClient.Tests\commute-planner.MapsApiClient.Tests.csproj", "{B4B5A250-6308-4FF4-AB87-AA47C28B6F61}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.TransitApiClient.Tests", "Components\Tests\commute-planner.TransitApiClient.Tests\commute-planner.TransitApiClient.Tests.csproj", "{7742AE9F-D168-4510-8216-0EE8F41614C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,6 +92,10 @@ Global
 		{B4B5A250-6308-4FF4-AB87-AA47C28B6F61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4B5A250-6308-4FF4-AB87-AA47C28B6F61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4B5A250-6308-4FF4-AB87-AA47C28B6F61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7742AE9F-D168-4510-8216-0EE8F41614C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7742AE9F-D168-4510-8216-0EE8F41614C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7742AE9F-D168-4510-8216-0EE8F41614C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7742AE9F-D168-4510-8216-0EE8F41614C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -111,5 +117,6 @@ Global
 		{F012F00B-4DCF-49D5-9405-C917544BA831} = {C3645AA3-F625-4A70-980F-8E193EC72243}
 		{920289AD-888E-43F4-8C66-418140FB153C} = {968BA1D3-D9D7-44EA-A0CE-B57BF0501287}
 		{B4B5A250-6308-4FF4-AB87-AA47C28B6F61} = {920289AD-888E-43F4-8C66-418140FB153C}
+		{7742AE9F-D168-4510-8216-0EE8F41614C6} = {920289AD-888E-43F4-8C66-418140FB153C}
 	EndGlobalSection
 EndGlobal

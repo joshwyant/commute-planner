@@ -1,0 +1,61 @@
+{
+  "Siri": {
+    "ServiceDelivery": {
+      "ResponseTimestamp": "2024-03-11T17:57:46-07:00",
+      "DataObjectDelivery": {
+        "ResponseTimestamp": "2024-03-11T17:57:46-07:00",
+        "dataObjects": {
+          "SiteFrame": {
+            "@version": "any",
+            "@id": "SF",
+            "stopPlaces": {
+              "StopPlace": {
+                "@version": "any",
+                "@id": "15665",
+                "ValidBetween": {
+                  "FromDate": "2024-03-02T00:00:00-07:00",
+                  "ToDate": "2024-05-24T23:59:00-07:00"
+                },
+                "Name": "Market St & Castro St",
+                "Description": null,
+                "Centroid": {
+                  "Location": {
+                    "Longitude": "-122.434605",
+                    "Latitude": "37.76292"
+                  }
+                },
+                "AccessibilityAssessment": {
+                  "@version": "any",
+                  "@id": "15665",
+                  "MobilityImpairedAccess": "unknown",
+                  "limitations": {
+                    "AccessibilityLimitation": {
+                      "WheelchairAccess": "unknown"
+                    }
+                  }
+                },
+                "PostalAddress": {
+                  "AddressLine1": "Market St & Castro St",
+                  "Town": "San Francisco"
+                },
+                "Url": "https://www.sfmta.com/15665",
+                "OperatorRef": {
+                  "@ref": "SF"
+                },
+                "adjacentSites": {
+                  "ParkingRef": {
+                    "@ref": ""
+                  }
+                },
+                "PublicCode": "15665",
+                "TransportMode": "bus",
+                "StopPlaceType": "onstreetBus"
+              }
+            },
+            "parkings": null
+          }
+        }
+      }
+    }
+  }
+}
