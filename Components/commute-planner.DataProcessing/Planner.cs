@@ -1,8 +1,8 @@
-namespace commute_planner.Planning;
+namespace commute_planner.DataProcessing;
 
 public class Planner
 {
-  public PlannerRoute PlanRoute(int routeId)
+  public async Task<PlannerRoute> PlanRouteAsync(int routeId)
   {
     return new PlannerRoute()
     {

@@ -2,13 +2,13 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
-        <RootNamespace>commute_planner.Planning</RootNamespace>
+        <RootNamespace>commute_planner.EventCollaboration</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Databases\commute-planner.CommuteDatabase\commute-planner.CommuteDatabase.csproj" />
+      <PackageReference Include="RabbitMQ.Client" Version="6.7.0" />
     </ItemGroup>
 
 </Project>

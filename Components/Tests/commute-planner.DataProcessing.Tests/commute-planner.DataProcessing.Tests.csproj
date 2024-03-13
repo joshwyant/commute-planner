@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
-        <RootNamespace>commute_planner.Planning.Tests</RootNamespace>
+        <RootNamespace>commute_planner.DataProcessing.Tests</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
 
@@ -19,7 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\commute-planner.Planning\commute-planner.Planning.csproj" />
+      <ProjectReference Include="..\..\commute-planner.DataProcessing\commute-planner.DataProcessing.csproj" />
     </ItemGroup>
 
 </Project>

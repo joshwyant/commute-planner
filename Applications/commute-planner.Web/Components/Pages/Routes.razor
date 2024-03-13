@@ -1,0 +1,36 @@
+﻿@page "/routes"
+@using commute_planner.ApiClient
+@attribute [StreamRendering(true)]
+@attribute [OutputCache(Duration = 5)]
+
+@inject CommutePlannerApiClient CommutePlannerApi
+
+<PageTitle>Routes</PageTitle>
+
+<h1>Routes</h1>
+
+<p>This component demonstrates showing data loaded from a backend API service.</p>
+
+@if (_routes == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    foreach (var (id, name, transit, drivingRoute) in _routes)
+    {
+        <h2>@name</h2>
+        <p>Id: @id</p>
+        <p>Transit route @transit.Line: @transit.Description</p>
+        <p>Driving route: @drivingRoute.Description</p>
+    }
+}
+
+@code {
+    private Route[]? _routes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _routes = await CommutePlannerApi.GetRoutesAsync();
+    }
+}

@@ -1,5 +1,4 @@
-using commute_planner.MapsApi;
-using commute_planner.Web;
+using commute_planner.ApiClient;
 using commute_planner.Web.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +12,8 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddOutputCache();
 
-builder.Services.AddHttpClient<WeatherApiClient>(client => client.BaseAddress = new("http://apiservice"));
+builder.Services.AddHttpClient<CommutePlannerApiClient>(client =>
+    client.BaseAddress = new("http://apiservice"));
 
 var app = builder.Build();
 

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using commute_planner.CommuteDatabase.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace commute_planner.CommuteDatabase;
@@ -12,72 +13,4 @@ public class CommutePlannerDbContext(DbContextOptions options)
   public DbSet<MatchingRoute> MatchingRoutes { get; set; } = null!;
   public DbSet<TripData> TripData { get; set; } = null!;
   // ReSharper restore PropertyCanBeMadeInitOnly.Global
-}
-
-public class DrivingRoute
-{
-  [Key]
-  public int DrivingRouteId { get; init; }
-  
-  [StringLength(100)]
-  public required string Name { get; init; }
-  
-  [StringLength(1000)]
-  public required string Description { get; init; }
-  
-  [StringLength(300)]
-  public required string FromAddress { get; init; }
-  
-  [StringLength(300)]
-  public required string ToAddress { get; init; }
-}
-
-public class TransitRoute
-{
-  [Key]
-  public int TransitRouteId { get; init; }
-  
-  [StringLength(100)]
-  public required string Name { get; init; }
-  
-  [StringLength(1000)]
-  public required string Description { get; init; }
-  
-  [StringLength(8)]
-  public required string OperatorId { get; init; }
-  
-  [StringLength(12)]
-  public required string LineId { get; init; }
-  
-  [StringLength(12)]
-  public required string FromStopId { get; init; }
-  
-  [StringLength(12)]
-  public required string ToStopId { get; init; }
-}
-
-public class TripData
-{
-  [Key]
-  public int TripDataId { get; init; }
-
-  private DateTime Created { get; init; }
-  
-  public required MatchingRoute Route { get; init; }
-  
-  public int DrivingTimeInSeconds { get; init; }
-  
-  public int TransitTimeInSeconds { get; init; }
-}
-
-public class MatchingRoute
-{
-  [Key]
-  public int MatchingRouteId { get; init; }
-  
-  [StringLength(100)]
-  public required string Name { get; init; }
-  
-  public required DrivingRoute DrivingRoute { get; init; }
-  public required TransitRoute TransitRoute { get; init; }
 }

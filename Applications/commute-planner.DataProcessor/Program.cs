@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using commute_planner.CommuteDatabase;
+using commute_planner.CommuteDatabase.Models;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -13,14 +14,12 @@ builder.AddRabbitMQ("messaging", settings =>
 });
 builder.AddNpgsqlDbContext<CommutePlannerDbContext>("commute_db",
     settings =>
-    {
-        settings.ConnectionString = "Host=localhost;Database=commute_db";
-    });
+        settings.ConnectionString = "Host=localhost;Database=commute_db");
 
 var cts = new CancellationTokenSource();
 Console.CancelKeyPress += (sender, eventArgs) =>
 {
-  Console.WriteLine("Cancel keys pressed, exiting.");
+  Console.WriteLine("\nCancel keys pressed, exiting.");
   cts.Cancel();
 };
 
@@ -31,7 +30,6 @@ builder.Services.AddLogging(configure => configure.AddConsole());
 // builder.Services.AddHostedService<DataFetcherService>();
 
 var app = builder.Build();
-
 
 // Route suggestions and descriptions by ChatGPT.
 RoutePair[] pairs = [
@@ -75,7 +73,6 @@ RoutePair[] pairs = [
 
 // Seed the database.
 using var scope = app.Services.CreateScope();
-
 var dbContext = scope.ServiceProvider
     .GetService<CommutePlannerDbContext>();
 
@@ -113,54 +110,10 @@ if (dbContext.Database.EnsureCreated())
     await dbContext.SaveChangesAsync();
 }
 
-
-var messaging = scope.ServiceProvider
-    .GetService<IConnection>()!;
-var channel = messaging.CreateModel();
-const string exchangeName = "dataExchange",
-    queueName = "dataQueue",
-    routingKey = "dataKey";
-channel.ExchangeDeclare(exchangeName, ExchangeType.Direct);
-channel.QueueDeclare(queueName, durable: false, exclusive: false,
-    autoDelete: false, arguments: null);
-channel.QueueBind(queueName, exchangeName, "dataKey", arguments: null);
-
-var consumer = new EventingBasicConsumer(channel);
-consumer.Received += (ch, ea) =>
-{
-    var body = ea.Body.ToArray();
-    // copy or deserialise the payload
-    // and process the message
-    // ...
-    channel.BasicAck(ea.DeliveryTag, false);
-    var content = new StreamReader(new MemoryStream(body)).ReadToEnd();
-    Console.WriteLine($"Got message: {content}");
-};
-// this consumer tag identifies the subscription
-// when it has to be cancelled
-string consumerTag = channel.BasicConsume(queueName, false, consumer);
-
 // When running hosted services
 // await app.StartAsync(cts.Token);
 
-var log = app.Services.GetService<ILogger<Program>>()!;
-
-var db = scope.ServiceProvider.GetService<CommutePlannerDbContext>();
-while (!cts.IsCancellationRequested)
-{
-    log.LogInformation("About to do some stuff.");
-
-    var result = db.DrivingRoutes.First();
-    
-    log.LogInformation($"Result: {result.ToAddress}");
-
-    // Delay
-    log.LogInformation($"Delay...");
-    await Task.Delay(10000);
-}
-
-channel.BasicCancel(consumerTag);
-
+// Simple inline model for defining the seed data constants
 record RoutePair(
     string RouteName,
     string TransitRouteDescription,

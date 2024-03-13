@@ -38,11 +38,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.MapsApiClie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.TransitApiClient.Tests", "Components\Tests\commute-planner.TransitApiClient.Tests\commute-planner.TransitApiClient.Tests.csproj", "{7742AE9F-D168-4510-8216-0EE8F41614C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.Planning", "Components\commute-planner.Planning\commute-planner.Planning.csproj", "{8D5784F2-B528-4BAC-92A0-5CC78F7E3FD4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.DataCollection", "Components\commute-planner.DataCollection\commute-planner.DataCollection.csproj", "{215E1FA5-90DA-4FC8-A59F-A2A2E63C2F6A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.Routing", "Components\commute-planner.Routing\commute-planner.Routing.csproj", "{6385185F-25B3-4D94-93F0-00D4A0B0D9AB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.DataProcessing", "Components\commute-planner.DataProcessing\commute-planner.DataProcessing.csproj", "{E31FADD7-AD8D-4617-AC8F-2D804E8DAB32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.Planning.Tests", "Components\Tests\commute-planner.Planning.Tests\commute-planner.Planning.Tests.csproj", "{F31B99CB-D266-46B8-9C1F-B8B50B7FC4DD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.EventCollaboration", "Components\commute-planner.EventCollaboration\commute-planner.EventCollaboration.csproj", "{AF2F6450-7EB3-4641-AEE6-E66B513E0C5E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.DataCollection.Tests", "Components\Tests\commute-planner.DataCollection.Tests\commute-planner.DataCollection.Tests.csproj", "{A34CB534-9641-4C6A-811A-9D26D64F0EFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.DataProcessing.Tests", "Components\Tests\commute-planner.DataProcessing.Tests\commute-planner.DataProcessing.Tests.csproj", "{4633C344-C50E-4F2D-8488-39911E556E47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.ApiClient", "Components\commute-planner.ApiClient\commute-planner.ApiClient.csproj", "{095CB851-8734-4296-9471-539EA38915C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -102,18 +108,30 @@ Global
 		{7742AE9F-D168-4510-8216-0EE8F41614C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7742AE9F-D168-4510-8216-0EE8F41614C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7742AE9F-D168-4510-8216-0EE8F41614C6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8D5784F2-B528-4BAC-92A0-5CC78F7E3FD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8D5784F2-B528-4BAC-92A0-5CC78F7E3FD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8D5784F2-B528-4BAC-92A0-5CC78F7E3FD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8D5784F2-B528-4BAC-92A0-5CC78F7E3FD4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6385185F-25B3-4D94-93F0-00D4A0B0D9AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6385185F-25B3-4D94-93F0-00D4A0B0D9AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6385185F-25B3-4D94-93F0-00D4A0B0D9AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6385185F-25B3-4D94-93F0-00D4A0B0D9AB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F31B99CB-D266-46B8-9C1F-B8B50B7FC4DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F31B99CB-D266-46B8-9C1F-B8B50B7FC4DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F31B99CB-D266-46B8-9C1F-B8B50B7FC4DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F31B99CB-D266-46B8-9C1F-B8B50B7FC4DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{215E1FA5-90DA-4FC8-A59F-A2A2E63C2F6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{215E1FA5-90DA-4FC8-A59F-A2A2E63C2F6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{215E1FA5-90DA-4FC8-A59F-A2A2E63C2F6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{215E1FA5-90DA-4FC8-A59F-A2A2E63C2F6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E31FADD7-AD8D-4617-AC8F-2D804E8DAB32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E31FADD7-AD8D-4617-AC8F-2D804E8DAB32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E31FADD7-AD8D-4617-AC8F-2D804E8DAB32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E31FADD7-AD8D-4617-AC8F-2D804E8DAB32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF2F6450-7EB3-4641-AEE6-E66B513E0C5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF2F6450-7EB3-4641-AEE6-E66B513E0C5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF2F6450-7EB3-4641-AEE6-E66B513E0C5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF2F6450-7EB3-4641-AEE6-E66B513E0C5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A34CB534-9641-4C6A-811A-9D26D64F0EFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A34CB534-9641-4C6A-811A-9D26D64F0EFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A34CB534-9641-4C6A-811A-9D26D64F0EFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A34CB534-9641-4C6A-811A-9D26D64F0EFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4633C344-C50E-4F2D-8488-39911E556E47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4633C344-C50E-4F2D-8488-39911E556E47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4633C344-C50E-4F2D-8488-39911E556E47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4633C344-C50E-4F2D-8488-39911E556E47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{095CB851-8734-4296-9471-539EA38915C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{095CB851-8734-4296-9471-539EA38915C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{095CB851-8734-4296-9471-539EA38915C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{095CB851-8734-4296-9471-539EA38915C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -136,8 +154,11 @@ Global
 		{920289AD-888E-43F4-8C66-418140FB153C} = {968BA1D3-D9D7-44EA-A0CE-B57BF0501287}
 		{B4B5A250-6308-4FF4-AB87-AA47C28B6F61} = {920289AD-888E-43F4-8C66-418140FB153C}
 		{7742AE9F-D168-4510-8216-0EE8F41614C6} = {920289AD-888E-43F4-8C66-418140FB153C}
-		{8D5784F2-B528-4BAC-92A0-5CC78F7E3FD4} = {968BA1D3-D9D7-44EA-A0CE-B57BF0501287}
-		{6385185F-25B3-4D94-93F0-00D4A0B0D9AB} = {968BA1D3-D9D7-44EA-A0CE-B57BF0501287}
-		{F31B99CB-D266-46B8-9C1F-B8B50B7FC4DD} = {920289AD-888E-43F4-8C66-418140FB153C}
+		{215E1FA5-90DA-4FC8-A59F-A2A2E63C2F6A} = {968BA1D3-D9D7-44EA-A0CE-B57BF0501287}
+		{E31FADD7-AD8D-4617-AC8F-2D804E8DAB32} = {968BA1D3-D9D7-44EA-A0CE-B57BF0501287}
+		{AF2F6450-7EB3-4641-AEE6-E66B513E0C5E} = {968BA1D3-D9D7-44EA-A0CE-B57BF0501287}
+		{A34CB534-9641-4C6A-811A-9D26D64F0EFA} = {920289AD-888E-43F4-8C66-418140FB153C}
+		{4633C344-C50E-4F2D-8488-39911E556E47} = {920289AD-888E-43F4-8C66-418140FB153C}
+		{095CB851-8734-4296-9471-539EA38915C0} = {968BA1D3-D9D7-44EA-A0CE-B57BF0501287}
 	EndGlobalSection
 EndGlobal

@@ -1,4 +1,4 @@
-namespace commute_planner.Planning.Tests;
+namespace commute_planner.DataProcessing;
 
 public class Tests
 {
@@ -8,12 +8,12 @@ public class Tests
   }
 
   [Test]
-  public void TestPlanner()
+  public async Task TestPlanner()
   {
     var planner = new Planner();
 
     var routeId = 1;
-    var route = planner.PlanRoute(routeId);
+    var route = await planner.PlanRouteAsync(routeId);
 
     Assert.That(route, Is.Not.Null);
     Assert.That(route.Created,
