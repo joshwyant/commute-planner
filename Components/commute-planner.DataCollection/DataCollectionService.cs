@@ -10,13 +10,21 @@ public class DataCollectionService(
   TransitApiClient transit,
   IConnection messaging) : IHostedService
 {
-  public Task StartAsync(CancellationToken cancellationToken)
+  protected readonly CancellationTokenSource _cts =
+    new CancellationTokenSource();
+  public async Task StartAsync(CancellationToken cancellationToken)
   {
-    throw new NotImplementedException();
+    var cts = CancellationTokenSource.CreateLinkedTokenSource(_cts.Token,
+      cancellationToken);
+    
+    // Any tasks including starting the service
   }
 
-  public Task StopAsync(CancellationToken cancellationToken)
+  public async Task StopAsync(CancellationToken cancellationToken)
   {
-    throw new NotImplementedException();
+    var cts = CancellationTokenSource.CreateLinkedTokenSource(_cts.Token,
+      cancellationToken);
+    
+    // Any async cancellation here
   }
 }

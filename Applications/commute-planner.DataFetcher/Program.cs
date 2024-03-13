@@ -39,6 +39,7 @@ builder.Services.AddTransitApiHttpClient(transitBaseUrl, transitApiKey);
 builder.Services.AddLogging(configure => configure.AddConsole());
 
 // Add a hosted service
+// This is the actual service this application is for
 builder.Services.AddHostedService<DataCollectionService>();
 
 var app = builder.Build();
