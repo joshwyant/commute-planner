@@ -1,6 +1,7 @@
 using commute_planner.CommuteDatabase;
 using commute_planner.CommuteDatabase.Models;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace commute_planner.DataProcessing;
 
@@ -8,12 +9,16 @@ public class DataProcessingService : IHostedService
 {
   private readonly CancellationTokenSource _cts;
   private readonly CommutePlannerDbContext _db;
+  private readonly ILogger<DataProcessingService> _log;
 
-  public DataProcessingService(CommutePlannerDbContext db)
+  public DataProcessingService(CommutePlannerDbContext db,
+    ILogger<DataProcessingService> log)
   {
     _cts = new CancellationTokenSource();
     _db = db;
+    _log = log;
   }
+
   public async Task StartAsync(CancellationToken token = default)
   {
     var cts =

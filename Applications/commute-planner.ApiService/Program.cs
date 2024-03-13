@@ -1,7 +1,10 @@
+using commute_planner.EventCollaboration;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add service defaults & Aspire components.
 builder.AddServiceDefaults();
+builder.Services.AddHostedService<EventCollaborationService>();
 
 // Add services to the container.
 builder.Services.AddProblemDetails();

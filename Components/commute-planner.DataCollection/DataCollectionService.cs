@@ -1,28 +1,26 @@
 using commute_planner.MapsApi;
 using commute_planner.TransitApi;
 using Microsoft.Extensions.Hosting;
-using RabbitMQ.Client;
+using Microsoft.Extensions.Logging;
 
 namespace commute_planner.DataCollection;
 
 public class DataCollectionService : IHostedService
 {
   private readonly CancellationTokenSource _cts;
-  private readonly IConnection _messaging;
   private readonly MapsApiClient _maps;
   private readonly TransitApiClient _transit;
-  private readonly IModel _channel;
+  private readonly ILogger<DataCollectionService> _log;
 
   public DataCollectionService(
     MapsApiClient maps,
     TransitApiClient transit,
-    IConnection messaging)
+    ILogger<DataCollectionService> log)
   {
     _cts = new();
     _maps = maps;
     _transit = transit;
-    _messaging = messaging;
-    _channel = messaging.CreateModel();
+    _log = log;
   }
   public async Task StartAsync(CancellationToken token = default)
   {
