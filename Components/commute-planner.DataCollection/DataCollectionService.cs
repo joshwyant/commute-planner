@@ -5,26 +5,38 @@ using RabbitMQ.Client;
 
 namespace commute_planner.DataCollection;
 
-public class DataCollectionService(
-  MapsApiClient maps,
-  TransitApiClient transit,
-  IConnection messaging) : IHostedService
+public class DataCollectionService : IHostedService
 {
-  protected readonly CancellationTokenSource _cts =
-    new CancellationTokenSource();
-  public async Task StartAsync(CancellationToken cancellationToken)
+  private readonly CancellationTokenSource _cts;
+  private readonly IConnection _messaging;
+  private readonly MapsApiClient _maps;
+  private readonly TransitApiClient _transit;
+  private readonly IModel _channel;
+
+  public DataCollectionService(
+    MapsApiClient maps,
+    TransitApiClient transit,
+    IConnection messaging)
   {
-    var cts = CancellationTokenSource.CreateLinkedTokenSource(_cts.Token,
-      cancellationToken);
-    
-    // Any tasks including starting the service
+    _cts = new();
+    _maps = maps;
+    _transit = transit;
+    _messaging = messaging;
+    _channel = messaging.CreateModel();
+  }
+  public async Task StartAsync(CancellationToken token = default)
+  {
+    var cts =
+      CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, token);
+
+    await Task.CompletedTask;
   }
 
-  public async Task StopAsync(CancellationToken cancellationToken)
+  public async Task StopAsync(CancellationToken token = default)
   {
-    var cts = CancellationTokenSource.CreateLinkedTokenSource(_cts.Token,
-      cancellationToken);
-    
-    // Any async cancellation here
+    var cts =
+      CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, token);
+
+    await Task.CompletedTask;
   }
 }

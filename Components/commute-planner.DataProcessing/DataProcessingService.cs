@@ -4,28 +4,34 @@ using Microsoft.Extensions.Hosting;
 
 namespace commute_planner.DataProcessing;
 
-public class DataProcessingService(CommutePlannerDbContext db) : IHostedService
+public class DataProcessingService : IHostedService
 {
-  protected readonly CancellationTokenSource _cts =
-    new CancellationTokenSource();
-  public async Task StartAsync(CancellationToken cancellationToken)
+  private readonly CancellationTokenSource _cts;
+  private readonly CommutePlannerDbContext _db;
+
+  public DataProcessingService(CommutePlannerDbContext db)
   {
-    var cts = CancellationTokenSource.CreateLinkedTokenSource(_cts.Token,
-      cancellationToken);
+    _cts = new CancellationTokenSource();
+    _db = db;
+  }
+  public async Task StartAsync(CancellationToken token = default)
+  {
+    var cts =
+      CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, token);
     await SeedDatabaseAsync(cts.Token);
   }
 
-  public async Task StopAsync(CancellationToken cancellationToken)
+  public async Task StopAsync(CancellationToken token = default)
   {
-    var cts = CancellationTokenSource.CreateLinkedTokenSource(_cts.Token,
-      cancellationToken);
-    
-    // Any async cancellation here
+    var cts =
+      CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, token);
+
+    await Task.CompletedTask;
   }
 
-  protected async Task SeedDatabaseAsync(CancellationToken token)
+  private async Task SeedDatabaseAsync(CancellationToken token)
   {
-    if (await db.Database.EnsureCreatedAsync(token))
+    if (await _db.Database.EnsureCreatedAsync(token))
     {
       foreach (var pair in _pairs)
       {
@@ -51,12 +57,12 @@ public class DataProcessingService(CommutePlannerDbContext db) : IHostedService
           DrivingRoute = autoRoute,
           TransitRoute = transitRoute,
         };
-        db.TransitRoutes.Add(transitRoute);
-        db.DrivingRoutes.Add(autoRoute);
-        db.MatchingRoutes.Add(match);
+        _db.TransitRoutes.Add(transitRoute);
+        _db.DrivingRoutes.Add(autoRoute);
+        _db.MatchingRoutes.Add(match);
       }
 
-      await db.SaveChangesAsync(token);
+      await _db.SaveChangesAsync(token);
     }
   }
   
@@ -100,16 +106,16 @@ public class DataProcessingService(CommutePlannerDbContext db) : IHostedService
           "Sunnydale Ave & Bayshore Blvd, San Francisco, CA 94134",
           "Chase Center, 1 Warriors Way, San Francisco, CA 94158"),
   ];
+  
+  record RoutePair(
+    string RouteName,
+    string TransitRouteDescription,
+    string OperatorId,
+    string LineId,
+    string FromStopId,
+    string ToStopId,
+    string DrivingRouteDescription,
+    string FromAddress,
+    string ToAddress
+  );
 }
-
-record RoutePair(
-  string RouteName,
-  string TransitRouteDescription,
-  string OperatorId,
-  string LineId,
-  string FromStopId,
-  string ToStopId,
-  string DrivingRouteDescription,
-  string FromAddress,
-  string ToAddress
-);
