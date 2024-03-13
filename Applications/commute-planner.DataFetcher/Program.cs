@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using commute_planner.DataCollection;
 using commute_planner.MapsApi;
 using commute_planner.TransitApi;
 using RabbitMQ.Client;
@@ -25,12 +26,10 @@ var transitApiKey = Environment.GetEnvironmentVariable("TRANSIT_API_KEY") ??
                       "Missing transit API key.");
 
 var googleBaseUrl = Environment.GetEnvironmentVariable("GOOGLE_BASE_URL")
-                    //?? "http://localhost:5043";
-                    ?? "https://routes.googleapis.com/";
+                    ?? "http://localhost:5043";
 
 var transitBaseUrl = Environment.GetEnvironmentVariable("TRANSIT_BASE_URL")
-                    // ?? "http://localhost:5273/transit/";
-                    ?? "https://api.511.org/transit/";
+                     ?? "http://localhost:5273/transit/";
 
 // Add HTTP client configurations for our Maps and Transit APIs
 builder.Services.AddMapsApiHttpClient(googleBaseUrl, googleApiKey);
@@ -40,9 +39,9 @@ builder.Services.AddTransitApiHttpClient(transitBaseUrl, transitApiKey);
 builder.Services.AddLogging(configure => configure.AddConsole());
 
 // Add a hosted service
-// builder.Services.AddHostedService<DataFetcherService>();
+builder.Services.AddHostedService<DataCollectionService>();
 
 var app = builder.Build();
 
 // When running hosted services
-// await app.StartAsync(cts.Token);
+await app.StartAsync(cts.Token);

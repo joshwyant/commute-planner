@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using commute_planner.CommuteDatabase;
 using commute_planner.CommuteDatabase.Models;
+using commute_planner.DataProcessing;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -27,7 +28,7 @@ Console.CancelKeyPress += (sender, eventArgs) =>
 builder.Services.AddLogging(configure => configure.AddConsole());
 
 // Add a hosted service
-// builder.Services.AddHostedService<DataFetcherService>();
+builder.Services.AddHostedService<DataProcessingService>();
 
 var app = builder.Build();
 
@@ -111,7 +112,7 @@ if (dbContext.Database.EnsureCreated())
 }
 
 // When running hosted services
-// await app.StartAsync(cts.Token);
+await app.StartAsync(cts.Token);
 
 // Simple inline model for defining the seed data constants
 record RoutePair(

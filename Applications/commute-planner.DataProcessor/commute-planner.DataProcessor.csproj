@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Components\commute-planner.DataProcessing\commute-planner.DataProcessing.csproj" />
     <ProjectReference Include="..\..\Components\commute-planner.ServiceDefaults\commute-planner.ServiceDefaults.csproj" />
     <ProjectReference Include="..\..\Databases\commute-planner.CommuteDatabase\commute-planner.CommuteDatabase.csproj" />
   </ItemGroup>
