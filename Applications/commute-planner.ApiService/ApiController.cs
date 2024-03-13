@@ -1,5 +1,6 @@
 using commute_planner.CommuteDatabase;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace commute_planner.ApiService;
 
@@ -12,6 +13,14 @@ public class ApiController(CommutePlannerDbContext dbContext) : Controller
   [HttpGet("RoutePairs")]
   public async Task<IActionResult> RoutePairsAsync()
   {
-    return Json(DbContext.MatchingRoutes);
+    return Json(DbContext.MatchingRoutes
+      .Include(r => r.DrivingRoute)
+      .Include(r => r.TransitRoute));
   }
+
+  public async Task<IActionResult> PlanRoute(int routeId)
+  {
+    return Problem("Not implemented");
+  }
+  
 }
