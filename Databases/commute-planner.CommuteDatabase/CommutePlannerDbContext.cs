@@ -10,6 +10,7 @@ public class CommutePlannerDbContext(DbContextOptions options)
   public DbSet<DrivingRoute> DrivingRoutes { get; set; } = null!;
   public DbSet<TransitRoute> TransitRoutes { get; set; } = null!;
   public DbSet<MatchingRoute> MatchingRoutes { get; set; } = null!;
+  public DbSet<TripData> TripData { get; set; } = null!;
   // ReSharper restore PropertyCanBeMadeInitOnly.Global
 }
 
@@ -53,6 +54,20 @@ public class TransitRoute
   
   [StringLength(12)]
   public required string ToStopId { get; init; }
+}
+
+public class TripData
+{
+  [Key]
+  public int TripDataId { get; init; }
+
+  private DateTime Created { get; init; }
+  
+  public required MatchingRoute Route { get; init; }
+  
+  public int DrivingTimeInSeconds { get; init; }
+  
+  public int TransitTimeInSeconds { get; init; }
 }
 
 public class MatchingRoute

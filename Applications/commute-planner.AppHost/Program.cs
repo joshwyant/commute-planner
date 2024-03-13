@@ -15,4 +15,8 @@ builder.AddProject<Projects.commute_planner_Web>("webfrontend")
 builder.AddProject<Projects.commute_planner_DataFetcher>("datafetcher")
   .WithReference(messaging);
 
+builder.AddProject<Projects.commute_planner_DataProcessor>("dataprocessor")
+  .WithReference(postgresdb)
+  .WithReference(messaging);
+
 builder.Build().Run();

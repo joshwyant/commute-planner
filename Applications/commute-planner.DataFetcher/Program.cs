@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using commute_planner.MapsApi;
 using commute_planner.TransitApi;
+using RabbitMQ.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,12 +25,12 @@ var transitApiKey = Environment.GetEnvironmentVariable("TRANSIT_API_KEY") ??
                       "Missing transit API key.");
 
 var googleBaseUrl = Environment.GetEnvironmentVariable("GOOGLE_BASE_URL")
-                    ?? "http://localhost:5043";
-                    //?? "https://routes.googleapis.com/";
+                    //?? "http://localhost:5043";
+                    ?? "https://routes.googleapis.com/";
 
 var transitBaseUrl = Environment.GetEnvironmentVariable("TRANSIT_BASE_URL")
-                     ?? "http://localhost:5273/transit/";
-                    //?? "https://api.511.org/transit/";
+                    // ?? "http://localhost:5273/transit/";
+                    ?? "https://api.511.org/transit/";
 
 // Add HTTP client configurations for our Maps and Transit APIs
 builder.Services.AddMapsApiHttpClient(googleBaseUrl, googleApiKey);
@@ -49,6 +50,20 @@ var app = builder.Build();
 var log = app.Services.GetService<ILogger<Program>>()!;
 var mapsApi = app.Services.GetService<MapsApiClient>();
 var transitApi = app.Services.GetService<TransitApiClient>();
+
+var messaging = app.Services
+  .GetService<IConnection>()!;
+var channel = messaging.CreateModel();
+const string exchangeName = "dataExchange",
+  queueName = "dataQueue",
+  routingKey = "dataKey";
+channel.ExchangeDeclare(exchangeName, ExchangeType.Direct);
+channel.QueueDeclare(queueName, durable: false, exclusive: false,
+  autoDelete: false, arguments: null);
+channel.QueueBind(queueName, exchangeName, "dataKey", arguments: null);
+
+byte[] messageBodyBytes = "Hello, world!"u8.ToArray();
+channel.BasicPublish(exchangeName, routingKey, null, messageBodyBytes);
 
 const int apiInterval = 60000; // Once per minute
 var backoff = apiInterval;
