@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using commute_planner.ApiService;
 using commute_planner.CommuteDatabase;
 using commute_planner.EventCollaboration;
@@ -16,12 +17,17 @@ builder.AddServiceDefaults();
 //       : builder.Configuration.GetConnectionString("CLOUDAMPQ_CONNECTION_STRING"));
 // builder.Services.AddEventCollaborationServices<ApiExchange>();
 
+var connectionString = builder.Configuration.GetConnectionString(
+                         "AZURE_POSTGRESQL_CONNECTIONSTRING")
+                       ?? "Host=localhost;Database=commute_db";
+
+var maskedConnectionString = Regex.Replace(connectionString,
+  @"((?<=password=)|(?<=(pass|word)=))[^;]*(?=;|$)", "<hidden>",
+  RegexOptions.Multiline | RegexOptions.IgnoreCase);
+
 // Database
 builder.AddNpgsqlDbContext<CommutePlannerDbContext>("commute_db",
-  settings =>
-    settings.ConnectionString = 
-      builder.Configuration.GetConnectionString("AZURE_POSTGRESQL_CONNECTIONSTRING")
-      ?? "Host=localhost;Database=commute_db");
+  settings => settings.ConnectionString = connectionString);
 
 // Add services to the container.
 builder.Services.AddProblemDetails();
@@ -35,9 +41,12 @@ var app = builder.Build();
 app.UseExceptionHandler();
 
 using var scope = app.Services.CreateScope();
+var log = scope.ServiceProvider.GetService<ILogger>();
+
+log.LogInformation($"PostgreSQL connection string: '{maskedConnectionString}'");
+
 //var exchange = scope.ServiceProvider.GetService<ApiExchange>();
 var db = scope.ServiceProvider.GetService<CommutePlannerDbContext>();
-var log = scope.ServiceProvider.GetService<ILogger>();
 
 app.MapGet("/routes", async () =>
 {
