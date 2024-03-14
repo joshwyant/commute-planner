@@ -123,7 +123,7 @@ jobs:
         id: deploy-to-apiservice
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'joshapi'
+          app-name: 'apiservice'
           slot-name: 'Production'
           package: .
 
@@ -153,7 +153,7 @@ jobs:
         id: deploy-to-datafetcher
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'datafetcher1'
+          app-name: 'datafetcher'
           slot-name: 'Production'
           package: .
 
@@ -183,6 +183,6 @@ jobs:
         id: deploy-to-dataprocessor
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'dataprocessor1'
+          app-name: 'dataprocessor'
           slot-name: 'Production'
           package: .
