@@ -50,6 +50,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.DataProcess
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.ApiClient", "Components\commute-planner.ApiClient\commute-planner.ApiClient.csproj", "{095CB851-8734-4296-9471-539EA38915C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "commute-planner.TransitApiModels", "Components\commute-planner.TransitApiModels\commute-planner.TransitApiModels.csproj", "{97997695-59FA-4088-A497-F5B9CA6D36CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -132,6 +134,10 @@ Global
 		{095CB851-8734-4296-9471-539EA38915C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{095CB851-8734-4296-9471-539EA38915C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{095CB851-8734-4296-9471-539EA38915C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97997695-59FA-4088-A497-F5B9CA6D36CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97997695-59FA-4088-A497-F5B9CA6D36CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97997695-59FA-4088-A497-F5B9CA6D36CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97997695-59FA-4088-A497-F5B9CA6D36CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -160,5 +166,6 @@ Global
 		{A34CB534-9641-4C6A-811A-9D26D64F0EFA} = {920289AD-888E-43F4-8C66-418140FB153C}
 		{4633C344-C50E-4F2D-8488-39911E556E47} = {920289AD-888E-43F4-8C66-418140FB153C}
 		{095CB851-8734-4296-9471-539EA38915C0} = {968BA1D3-D9D7-44EA-A0CE-B57BF0501287}
+		{97997695-59FA-4088-A497-F5B9CA6D36CB} = {968BA1D3-D9D7-44EA-A0CE-B57BF0501287}
 	EndGlobalSection
 EndGlobal

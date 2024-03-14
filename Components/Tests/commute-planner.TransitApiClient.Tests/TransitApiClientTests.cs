@@ -1,6 +1,7 @@
 using System.Net;
 using System.Text.Json;
 using commute_planner.TransitApi;
+using commute_planner.TransitApiModels;
 using Moq;
 using Moq.Protected;
 

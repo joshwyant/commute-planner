@@ -12,4 +12,8 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\commute-planner.TransitApiModels\commute-planner.TransitApiModels.csproj" />
+  </ItemGroup>
+
 </Project>

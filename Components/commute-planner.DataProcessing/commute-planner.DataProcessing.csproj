@@ -13,6 +13,8 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Databases\commute-planner.CommuteDatabase\commute-planner.CommuteDatabase.csproj" />
+      <ProjectReference Include="..\commute-planner.EventCollaboration\commute-planner.EventCollaboration.csproj" />
+      <ProjectReference Include="..\commute-planner.TransitApiModels\commute-planner.TransitApiModels.csproj" />
     </ItemGroup>
 
     <ItemGroup>

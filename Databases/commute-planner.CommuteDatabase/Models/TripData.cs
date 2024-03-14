@@ -9,7 +9,7 @@ public class TripData
 
   public DateTime Created { get; init; }
   
-  public required MatchingRoute Route { get; init; }
+  public MatchingRoute Route { get; init; }
   public int MatchingRouteId { get; init; }
   
   public int DrivingTimeInSeconds { get; init; }

@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using commute_planner.DataCollection;
-using commute_planner.EventCollaboration;
 using commute_planner.MapsApi;
 using commute_planner.TransitApi;
 using RabbitMQ.Client;
@@ -40,8 +39,7 @@ builder.Services.AddTransitApiHttpClient(transitBaseUrl, transitApiKey);
 builder.Services.AddLogging(configure => configure.AddConsole());
 
 // Add our hosted services
-builder.Services.AddHostedService<DataCollectionService>();  // This app
-builder.Services.AddHostedService<EventCollaborationService>();
+builder.Services.AddDataCollectionServices();  // This app
 
 var app = builder.Build();
 

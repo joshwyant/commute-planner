@@ -2,7 +2,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Components\commute-planner.DataCollection\commute-planner.DataCollection.csproj" />
-    <ProjectReference Include="..\..\Components\commute-planner.EventCollaboration\commute-planner.EventCollaboration.csproj" />
     <ProjectReference Include="..\..\Components\commute-planner.MapsApiClient\commute-planner.MapsApiClient.csproj" />
     <ProjectReference Include="..\..\Components\commute-planner.ServiceDefaults\commute-planner.ServiceDefaults.csproj" />
     <ProjectReference Include="..\..\Components\commute-planner.TransitApiClient\commute-planner.TransitApiClient.csproj" />

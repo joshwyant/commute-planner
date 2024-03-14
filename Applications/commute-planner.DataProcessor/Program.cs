@@ -1,10 +1,6 @@
 ﻿using System.Text.Json;
 using commute_planner.CommuteDatabase;
-using commute_planner.CommuteDatabase.Models;
 using commute_planner.DataProcessing;
-using commute_planner.EventCollaboration;
-using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,9 +22,7 @@ Console.CancelKeyPress += (sender, eventArgs) =>
 builder.Services.AddLogging(configure => configure.AddConsole());
 
 // Add a hosted service
-// This is the actual service this application is for
-builder.Services.AddHostedService<DataProcessingService>();
-builder.Services.AddHostedService<EventCollaborationService>();
+builder.Services.AddDataProcessingServices();  // This app
 
 var app = builder.Build();
 

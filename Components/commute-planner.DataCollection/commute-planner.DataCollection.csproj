@@ -12,6 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\commute-planner.EventCollaboration\commute-planner.EventCollaboration.csproj" />
       <ProjectReference Include="..\commute-planner.MapsApiClient\commute-planner.MapsApiClient.csproj" />
       <ProjectReference Include="..\commute-planner.TransitApiClient\commute-planner.TransitApiClient.csproj" />
     </ItemGroup>

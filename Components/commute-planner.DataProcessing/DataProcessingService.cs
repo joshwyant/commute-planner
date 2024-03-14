@@ -1,5 +1,7 @@
+using System.Threading.Tasks.Dataflow;
 using commute_planner.CommuteDatabase;
 using commute_planner.CommuteDatabase.Models;
+using commute_planner.EventCollaboration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -9,13 +11,35 @@ public class DataProcessingService : IHostedService
 {
   private readonly CancellationTokenSource _cts;
   private readonly CommutePlannerDbContext _db;
+  private DataProcessingExchange _exchange;
   private readonly ILogger<DataProcessingService> _log;
+  private Dictionary<int, JoinBlock<DrivingTrip, TransitTrip>> _joinBlocks;
+
+  private Dictionary<int, JoinBlock<
+    CollectedStopsResponse,
+    CollectedLinesResponse,
+    CollectedStopMonitoringResponse>> _rawTransitBlocks1;
+  private Dictionary<int, JoinBlock<
+    CollectedStopPlacesResponse,
+    CollectedVehicleMonitoringResponse,
+    CollectedScheduledDeparturesAtStopResponse>> _rawTransitBlocks2;
+
+  private Dictionary<int, JoinBlock<Tuple<CollectedStopsResponse,
+    CollectedLinesResponse,
+    CollectedStopMonitoringResponse>, Tuple<CollectedStopPlacesResponse,
+    CollectedVehicleMonitoringResponse,
+    CollectedScheduledDeparturesAtStopResponse>>> _rawTransitBlocks;
+  
+  private ActionBlock<Tuple<DrivingTrip, TransitTrip>> _actionBlock;
 
   public DataProcessingService(CommutePlannerDbContext db,
+    DataProcessingExchange exchange,
     ILogger<DataProcessingService> log)
   {
     _cts = new CancellationTokenSource();
     _db = db;
+    _exchange = exchange;
+    _joinBlocks = new Dictionary<int, JoinBlock<DrivingTrip, TransitTrip>>();
     _log = log;
   }
 
@@ -24,14 +48,190 @@ public class DataProcessingService : IHostedService
     var cts =
       CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, token);
     await SeedDatabaseAsync(cts.Token);
+
+    await StartDataflowServiceAsync(token);
+
+    await StartTriggerServiceAsync(token);
+
+    // Now start consuming
+    // ...
   }
 
-  public async Task StopAsync(CancellationToken token = default)
+  private async Task StartTriggerServiceAsync(CancellationToken token = default)
   {
     var cts =
       CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, token);
 
-    await Task.CompletedTask;
+    var task = Task.Run(async () =>
+    {
+      while (!cts.IsCancellationRequested)
+      {
+        // Trigger fresh data collection from the data collection service
+        // every 5 minutes.
+        foreach (var route in _db.MatchingRoutes)
+        {
+          var drivingRoute = route.DrivingRoute;
+          var transitRoute = route.TransitRoute;
+          // Collect driving times for each route
+          var drivingRequest = new CollectFreshDrivingRouteRequest(
+            route.MatchingRouteId,
+            drivingRoute.FromAddress,
+            drivingRoute.ToAddress);
+          _exchange.Publish(DataProcessingExchange.DataCollectionRoutingKey,
+            drivingRequest);
+          await Task.Yield();
+          
+          // Collect transit times for each route
+          var transitRequest = new CollectFreshTransitRouteRequest(
+            route.MatchingRouteId,
+            transitRoute.OperatorId,
+            transitRoute.LineId,
+            transitRoute.FromStopId,
+            transitRoute.ToStopId);
+          _exchange.Publish(DataProcessingExchange.DataCollectionRoutingKey,
+            transitRequest);
+          await Task.Yield();
+        }
+        await Task.Delay(300000);  // 5 minutes
+      }
+    }, cts.Token);
+  }
+
+  private async Task StartDataflowServiceAsync(CancellationToken token = default)
+  {
+    var cts =
+      CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, token);
+    
+    // Consume data from the service!
+    _actionBlock = new ActionBlock<Tuple<DrivingTrip, TransitTrip>>(
+      async tuple =>
+      {
+        var (drivingTrip, transitTrip) = tuple;
+        _db.TripData.Add(new TripData
+        {
+          Created = drivingTrip.Created < transitTrip.Created
+            ? drivingTrip.Created
+            : transitTrip.Created, // Oldest of the 2
+          DrivingTimeInSeconds = drivingTrip.TimeInSeconds,
+          TransitTimeInSeconds = drivingTrip.TimeInSeconds,
+          MatchingRouteId = drivingTrip.RouteId,
+        });
+        await _db.SaveChangesAsync();
+      }, new ExecutionDataflowBlockOptions()
+      {
+        CancellationToken = cts.Token
+      });
+    
+    // Wire them up
+    foreach (var route in _db.MatchingRoutes)
+    {
+      var joinBlock = new JoinBlock<DrivingTrip, TransitTrip>(new GroupingDataflowBlockOptions()
+      {
+        CancellationToken = cts.Token
+      });
+      joinBlock.LinkTo(_actionBlock);
+      _joinBlocks.Add(route.MatchingRouteId, joinBlock);
+    }
+
+    // Subscribe
+    _exchange.DrivingTripPosted += async (sender, trip) =>
+      await _joinBlocks[trip.RouteId].Target1.SendAsync(trip, cts.Token);
+    
+    _exchange.TransitTripPosted += async (sender, trip) =>
+      await _joinBlocks[trip.RouteId].Target2.SendAsync(trip, cts.Token);
+    
+    // Fix these later
+    _exchange.StopsPosted += async (sender, response) =>
+      await _rawTransitBlocks1[response.routeId].Target1.SendAsync(response, cts.Token);
+
+    _exchange.StopMonitoringPosted += async (sender, response) =>
+    {
+      var transitRoute = _db.MatchingRoutes
+        .Single(r => r.MatchingRouteId == response.routeId)
+        .TransitRoute;
+      var fromStopId = transitRoute.FromStopId;
+      var toStopId = transitRoute.ToStopId;
+      var lineId = transitRoute.LineId;
+      var data = response.data;
+
+      // Get journeys for the relevant line ID on our route.
+      var journeys = data
+        .Where(d =>
+          d.MonitoredVehicleJourney.LineRef == lineId)
+        .Select(sv =>
+          sv.MonitoredVehicleJourney)
+        .ToArray();
+      
+      // Get every upcoming stop for those vehicles' journeys.
+      var stops = journeys
+        .SelectMany(j => 
+          j.OnwardCalls.Select(c => new
+          {
+            Journey = j,
+            StopId = c.StopPointRef,
+            DepartureTime = DateTime.Parse(c.AimedDepartureTime)
+          }))
+      // ... which stops at the starting point
+      // ... and are also part of a journey that stops at the destination
+        .Where(s => 
+          s.DepartureTime > DateTime.UtcNow
+            && s.StopId == fromStopId 
+            && s.Journey.OnwardCalls.Any(c => 
+              c.StopPointRef == toStopId))
+        .ToArray();
+        
+      var earliestStop = stops
+        .MinBy(s => s.DepartureTime);
+
+      if (earliestStop != null)
+      {
+        var tripStops = earliestStop
+          ?.Journey?.OnwardCalls
+          ?.Select(c => new
+          {
+            StopId = c.StopPointRef,
+            DepartureTime = DateTime.Parse(c.AimedDepartureTime),
+          }).ToArray();
+        var sourceStop = tripStops.Single(
+          s => s.StopId == fromStopId);
+
+        var destStop = tripStops.Single(
+          s => s.StopId == toStopId);
+
+        var tripTime = (destStop.DepartureTime - sourceStop.DepartureTime)
+          .Seconds;
+        
+        // Queue it into our joined block target!
+        await _joinBlocks[response.routeId].Target2
+          .SendAsync(new TransitTrip(response.routeId, tripTime, DateTime.Now),
+            cts.Token);
+      }
+    };
+      
+    _exchange.StopPlacesPosted += async (sender, response) =>
+      await _rawTransitBlocks2[response.routeId].Target1.SendAsync(response, cts.Token);
+    
+    _exchange.VehicleMonitoringPosted += async (sender, response) =>
+      await _rawTransitBlocks2[response.routeId].Target2.SendAsync(response, cts.Token);
+    
+    _exchange.LinesPosted += async (sender, response) =>
+      await _rawTransitBlocks1[response.routeId].Target2.SendAsync(response, cts.Token);
+    
+    _exchange.ScheduledDeparturesPosted += async (sender, response) =>
+      await _rawTransitBlocks2[response.routeId].Target3.SendAsync(response, cts.Token);
+  }
+
+  public async Task StopAsync(CancellationToken token = default)
+  {
+    await _cts.CancelAsync();
+    
+    // Not using CancellationToken here
+    foreach (var joinBlock in _joinBlocks.Values)
+    {
+      joinBlock.Complete();
+    }
+
+    await _actionBlock.Completion;
   }
 
   private async Task SeedDatabaseAsync(CancellationToken token)
