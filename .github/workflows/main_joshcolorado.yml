@@ -31,8 +31,17 @@ jobs:
       - name: Test with dotnet
         run: dotnet test --configuration Release --no-build
 
-      - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+      - name: Publish API service
+        run: dotnet publish Applications/commute-planner.ApiService -c Release -o ${{env.DOTNET_ROOT}}/myapp/webapp
+
+      - name: Publish Web app
+        run: dotnet publish Applications/commute-planner.Web -c Release -o ${{env.DOTNET_ROOT}}/myapp/apiservice
+
+      - name: Publish Data fetching service
+        run: dotnet publish Applications/commute-planner.DataFetcher -c Release -o ${{env.DOTNET_ROOT}}/myapp/datafetcher
+
+      - name: Publish Data processor service
+        run: dotnet publish Applications/commute-planner.DataProcessor -c Release -o ${{env.DOTNET_ROOT}}/myapp/dataprocessor
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
