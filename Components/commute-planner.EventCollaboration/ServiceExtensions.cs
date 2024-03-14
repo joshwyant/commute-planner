@@ -9,6 +9,7 @@ public static class ServiceExtensions
   where T : class, ICommutePlannerExchange
   {
     // Register ICommutePlannerExchange as a singleton
+    services.AddSingleton<ICommutePlannerExchange, T>();
     services.AddSingleton<T>();
 
     // Register EventCollaborationService, assuming it depends on CommutePlannerExchange

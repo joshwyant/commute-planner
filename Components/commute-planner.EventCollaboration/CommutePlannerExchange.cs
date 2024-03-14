@@ -24,8 +24,7 @@ public abstract class CommutePlannerExchange : ICommutePlannerExchange
   public CommutePlannerExchange(
     IConnection messaging,
     ILogger<CommutePlannerExchange> log,
-    string consumerRoutingKey
-    )
+    string consumerRoutingKey)
   {
     _cts = new();
     _messagingConnection = messaging;

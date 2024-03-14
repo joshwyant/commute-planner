@@ -5,12 +5,23 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add service defaults & Aspire components.
+// Add service defaults & Aspire components:
 builder.AddServiceDefaults();
-builder.Services.AddEventCollaborationServices<ApiExchange>();
+
+// RabbitMQ
+// builder.AddRabbitMQ("messaging", settings 
+//   => settings.ConnectionString = 
+//     builder.Environment.IsDevelopment()
+//       ? "Host=ampq://localhost:5672/"
+//       : builder.Configuration.GetConnectionString("CLOUDAMPQ_CONNECTION_STRING"));
+// builder.Services.AddEventCollaborationServices<ApiExchange>();
+
+// Database
 builder.AddNpgsqlDbContext<CommutePlannerDbContext>("commute_db",
   settings =>
-    settings.ConnectionString = "Host=localhost;Database=commute_db");
+    settings.ConnectionString = 
+      builder.Configuration.GetConnectionString("AZURE_POSTGRESQL_CONNECTIONSTRING")
+      ?? "Host=localhost;Database=commute_db");
 
 // Add services to the container.
 builder.Services.AddProblemDetails();
@@ -24,7 +35,7 @@ var app = builder.Build();
 app.UseExceptionHandler();
 
 using var scope = app.Services.CreateScope();
-var exchange = scope.ServiceProvider.GetService<ApiExchange>();
+//var exchange = scope.ServiceProvider.GetService<ApiExchange>();
 var db = scope.ServiceProvider.GetService<CommutePlannerDbContext>();
 var log = scope.ServiceProvider.GetService<ILogger>();
 

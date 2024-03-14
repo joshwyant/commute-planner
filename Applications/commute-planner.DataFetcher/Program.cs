@@ -4,11 +4,18 @@ using commute_planner.MapsApi;
 using commute_planner.TransitApi;
 using RabbitMQ.Client;
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = Host.CreateApplicationBuilder(args);
 
 // Add service defaults & Aspire components.
 builder.AddServiceDefaults();
-builder.AddRabbitMQ("messaging");
+builder.AddRabbitMQ("messaging", settings =>
+{
+  var config =
+    builder.Configuration.GetConnectionString("CLOUDAMPQ_CONNECTION_STRING");
+
+  if (config != null)
+    settings.ConnectionString = config;
+});
 
 var cts = new CancellationTokenSource();
 Console.CancelKeyPress += (sender, eventArgs) =>
@@ -44,4 +51,4 @@ builder.Services.AddDataCollectionServices();  // This app
 var app = builder.Build();
 
 // When running hosted services
-await app.StartAsync(cts.Token);
+await app.RunAsync(cts.Token);
