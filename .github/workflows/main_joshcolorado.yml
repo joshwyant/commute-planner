@@ -153,7 +153,7 @@ jobs:
         id: deploy-to-datafetcher
         uses: azure/webapps-deploy@v2
         with:
-          app-name: 'datafetcher'
+          app-name: 'datafetcher1'
           slot-name: 'Production'
           package: .
 
