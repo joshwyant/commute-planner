@@ -13,7 +13,9 @@ builder.Services.AddRazorComponents()
 builder.Services.AddOutputCache();
 
 builder.Services.AddHttpClient<CommutePlannerApiClient>(client =>
-    client.BaseAddress = new("http://apiservice"));
+    client.BaseAddress = 
+        new(builder.Configuration["API_BASE_URL"]
+            ?? "http://apiservice"));
 
 var app = builder.Build();
 
