@@ -14,17 +14,9 @@ builder.AddNpgsqlDbContext<CommutePlannerDbContext>("commute_db");
 // Add services to the container.
 builder.Services.AddProblemDetails();
 
-// Add logging
-builder.Services.AddLogging(configure => configure.AddConsole());
-
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-  var logger = scope.ServiceProvider
-    .GetRequiredService<ILogger<CommutePlannerDbContext>>();
-  await app.Services.SetupCommuteDatabaseAsync(logger);
-}
+await app.Services.SetupCommuteDatabaseAsync<Program>();
 
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler();

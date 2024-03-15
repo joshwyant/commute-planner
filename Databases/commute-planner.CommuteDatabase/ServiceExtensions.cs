@@ -10,13 +10,15 @@ namespace commute_planner.CommuteDatabase;
 
 public static class ServiceExtensions
 {
-  public static async Task SetupCommuteDatabaseAsync(
-    this IServiceProvider services, ILogger<CommutePlannerDbContext> log, 
+  public static async Task SetupCommuteDatabaseAsync<T>(
+    this IServiceProvider services,
     CancellationToken token = default)
   {
     using var scope = services.CreateScope();
     var db = scope.ServiceProvider
       .GetRequiredService<CommutePlannerDbContext>();
+    var log = scope.ServiceProvider
+      .GetRequiredService<ILogger<T>>();
 
     var backoff = 250;
     var dbIsNew = false;

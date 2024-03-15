@@ -17,8 +17,6 @@ builder.Services.AddHttpClient<CommutePlannerApiClient>(client =>
         new(builder.Configuration["API_BASE_URL"]
             ?? "http://apiservice"));
 
-builder.Services.AddLogging(configure => configure.AddConsole());
-
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
