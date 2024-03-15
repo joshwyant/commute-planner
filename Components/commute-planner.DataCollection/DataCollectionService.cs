@@ -34,40 +34,54 @@ public class DataCollectionService : IHostedService
 
     _exchange.DrivingDataCollectionRequested += async (sender, request) =>
     {
-      var result = await _maps.ComputeRoutes(new ComputeRoutesRequest(
-        new Waypoint() { Address = request.FromAddress },
-        new Waypoint() { Address = request.ToAddress }));
+      try
+      {
+        var result = await _maps.ComputeRoutes(new ComputeRoutesRequest(
+          new Waypoint() { Address = request.FromAddress },
+          new Waypoint() { Address = request.ToAddress }), cts.Token);
 
-      if (result?.Routes is null || result.Routes.Length == 0) return;
-      var match = Regex.Match(result?.Routes[0]?.Duration!, "(\\d+)s");
-      if (!match.Success) return;
-      if (match.Groups.Count < 1) return;
-      var timeStr = match.Groups[0].Value;
-      var time = int.Parse(timeStr);
+          if (result?.Routes is null || result.Routes.Length == 0) return;
+          var match = Regex.Match(result?.Routes[0]?.Duration!, "(\\d+)s");
+          if (!match.Success) return;
+          if (match.Groups.Count < 1) return;
+          var timeStr = match.Groups[0].Value;
+          var time = int.Parse(timeStr);
 
-      var minutes = time / 60;
+          var minutes = time / 60;
 
-      var res =
-        new CollectedDrivingDataResponse(request.routeId, $"{minutes} minutes");
+          var res =
+            new CollectedDrivingDataResponse(request.routeId, $"{minutes} minutes");
 
-      // Send the data to the data processor service
-      _exchange.Publish(CommutePlannerExchange.DataProcessingRoutingKey, res);
+          // Send the data to the data processor service
+          _exchange.Publish(CommutePlannerExchange.DataProcessingRoutingKey, res);
+      }
+      catch (TaskCanceledException e)
+      {
+        _log.LogInformation("Task canceled while collecting driving data.");
+      }
     };
 
     _exchange.TransitDataCollectionRequested += async (sender, request) =>
     {
-      var result = await _transit.StopMonitoring(request.OperatorId, request.FromStopId);
-      var result1 = result.ToArray();
-      var res = new CollectedStopMonitoringResponse(request.routeId, result1);
-      
-      // Send the data to the processing service
-      _exchange.Publish(CommutePlannerExchange.DataProcessingRoutingKey, res);
+      try
+      {
+        var result = await _transit.StopMonitoring(request.OperatorId,
+          request.FromStopId, cts.Token);
+        var result1 = result.ToArray();
+        var res = new CollectedStopMonitoringResponse(request.routeId, result1);
+
+        // Send the data to the processing service
+        _exchange.Publish(CommutePlannerExchange.DataProcessingRoutingKey, res);
+      }
+      catch (TaskCanceledException)
+      {
+        _log.LogInformation("Task canceled while collecting transit data");
+      }
     };
   }
 
   public async Task StopAsync(CancellationToken token = default)
   {
-
     await _cts.CancelAsync();
   }
 }

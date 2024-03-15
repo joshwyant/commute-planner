@@ -9,25 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add service defaults & Aspire components:
 builder.AddServiceDefaults();
 
-// RabbitMQ
-// builder.AddRabbitMQ("messaging", settings 
-//   => settings.ConnectionString = 
-//     builder.Environment.IsDevelopment()
-//       ? "Host=ampq://localhost:5672/"
-//       : builder.Configuration.GetConnectionString("CLOUDAMPQ_CONNECTION_STRING"));
-// builder.Services.AddEventCollaborationServices<ApiExchange>();
-
-var connectionString = builder.Configuration.GetConnectionString(
-                         "AZURE_POSTGRESQL_CONNECTIONSTRING")
-                       ?? "Host=localhost;Database=commute_db";
-
-var maskedConnectionString = Regex.Replace(connectionString,
-  @"((?<=password=)|(?<=(pass|word)=))[^;]*(?=;|$)", "<hidden>",
-  RegexOptions.Multiline | RegexOptions.IgnoreCase);
-
 // Database
-builder.AddNpgsqlDbContext<CommutePlannerDbContext>("commute_db",
-  settings => settings.ConnectionString = connectionString);
+builder.AddNpgsqlDbContext<CommutePlannerDbContext>("commute_db");
 
 // Add services to the container.
 builder.Services.AddProblemDetails();
@@ -37,52 +20,57 @@ builder.Services.AddLogging(configure => configure.AddConsole());
 
 var app = builder.Build();
 
+await app.Services.SetupCommuteDatabaseAsync();
+
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler();
 
-using var scope = app.Services.CreateScope();
-var log = scope.ServiceProvider.GetService<ILogger>();
-
-log.LogInformation($"PostgreSQL connection string: '{maskedConnectionString}'");
-
-//var exchange = scope.ServiceProvider.GetService<ApiExchange>();
-var db = scope.ServiceProvider.GetService<CommutePlannerDbContext>();
-
-app.MapGet("/routes", async () =>
-{
-  var cts = new CancellationTokenSource(30000); // 30 seconds timeout
-  var backoff = 1000;
-  while (!cts.Token.IsCancellationRequested)
+app.MapGet("/routes",
+  async (CancellationToken token, CommutePlannerDbContext db,
+    ILogger<Program> log) =>
   {
-    var routes = await db.MatchingRoutes
-      .AsNoTracking()  // So it hits the database each time (no checking for unmodified objects)
-      .Include(r => r.DrivingRoute)
-      .Include(r => r.TransitRoute)
-      .ToArrayAsync(cts.Token);
-    
-    if (routes.Length > 0)
+    using var
+      timeoutCts = new CancellationTokenSource(30000); // 30 seconds timeout
+    using var linkedCts =
+      CancellationTokenSource.CreateLinkedTokenSource(token, timeoutCts.Token);
+    var backoff = 1000;
+    while (!linkedCts.Token.IsCancellationRequested)
     {
-      return routes
-        .Select(r => new Route(r.MatchingRouteId, r.Name,
-          new TransitRoute(r.TransitRoute.Description, r.TransitRoute.LineId),
-          new DrivingRoute(r.DrivingRoute.Description)))
-        .ToArray();
+      var routes = await db.MatchingRoutes
+        .AsNoTracking() // So it hits the database each time (no checking for unmodified objects)
+        .Include(r => r.DrivingRoute)
+        .Include(r => r.TransitRoute)
+        .ToArrayAsync(linkedCts.Token);
+
+      if (routes.Length > 0)
+      {
+        return routes
+          .Select(r => new Route(r.MatchingRouteId, r.Name,
+            new TransitRoute(r.TransitRoute.Description, r.TransitRoute.LineId),
+            new DrivingRoute(r.DrivingRoute.Description)))
+          .ToArray();
+      }
+
+      log.LogInformation(
+        $"No routes data was available. Waiting {backoff}ms...");
+      await Task.Delay(backoff, linkedCts.Token);
+      backoff = backoff * 3 / 2; // + 50%
     }
 
-    log.LogInformation($"No routes data was available. Waiting {backoff}ms...");
-    await Task.Delay(backoff);
-    backoff = backoff * 3 / 2;  // + 50%
-  }
-  log.LogError("/routes Timed out with no data in the database.");
+    log.LogError("/routes Timed out with no data in the database.");
 
-  return default;
-});
+    return default;
+  });
 
-app.MapGet("/latestTrip", async (int routeId) =>
+app.MapGet("/latestTrip", async (CancellationToken token,
+  CommutePlannerDbContext db, ILogger<Program> log, int routeId) =>
 {
-  var cts = new CancellationTokenSource(30000); // 30 seconds timeout
+  using var
+    timeoutCts = new CancellationTokenSource(30000); // 30 seconds timeout
+  using var linkedCts =
+    CancellationTokenSource.CreateLinkedTokenSource(token, timeoutCts.Token);
   var backoff = 1000;
-  while (!cts.Token.IsCancellationRequested)
+  while (!linkedCts.Token.IsCancellationRequested)
   {
     var trip = db.TripData.AsNoTracking()
       .Include(t => t.Route)
@@ -95,8 +83,8 @@ app.MapGet("/latestTrip", async (int routeId) =>
       var route = trip.Route;
       var transitRoute = route.TransitRoute;
       var drivingRoute = route.DrivingRoute;
-      var drivingTime = $"{trip.DrivingTimeInSeconds/60} minutes";
-      var transitTime = $"{trip.TransitTimeInSeconds/60} minutes";
+      var drivingTime = $"{trip.DrivingTimeInSeconds / 60} minutes";
+      var transitTime = $"{trip.TransitTimeInSeconds / 60} minutes";
       var lastUpdate = DateTime.Now - trip.Created;
       var lastUpdatedTime = lastUpdate.Minutes switch
       {
@@ -113,9 +101,10 @@ app.MapGet("/latestTrip", async (int routeId) =>
     }
 
     log.LogInformation($"No trip data was available. Waiting {backoff}ms...");
-    await Task.Delay(backoff);
-    backoff = backoff * 3 / 2;  // + 50%
+    await Task.Delay(backoff, linkedCts.Token);
+    backoff = backoff * 3 / 2; // + 50%
   }
+
   log.LogError("/latestTrip Timed out with no data in the database.");
 
   return default;

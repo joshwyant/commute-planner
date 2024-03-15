@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\TestSupport\commute-planner.FakeMapsServer\commute-planner.FakeMapsServer.csproj" />
+    <ProjectReference Include="..\..\TestSupport\commute-planner.FakeTransitServer\commute-planner.FakeTransitServer.csproj" />
     <ProjectReference Include="..\commute-planner.ApiService\commute-planner.ApiService.csproj" />
     <ProjectReference Include="..\commute-planner.DataProcessor\commute-planner.DataProcessor.csproj" />
     <ProjectReference Include="..\commute-planner.Web\commute-planner.Web.csproj" />

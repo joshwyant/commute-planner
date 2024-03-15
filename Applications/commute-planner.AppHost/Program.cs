@@ -19,4 +19,7 @@ builder.AddProject<Projects.commute_planner_DataProcessor>("dataprocessor")
   .WithReference(postgresdb)
   .WithReference(messaging);
 
+builder.AddProject<Projects.commute_planner_FakeMapsServer>("maps");
+builder.AddProject<Projects.commute_planner_FakeTransitServer>("transit");
+
 builder.Build().Run();

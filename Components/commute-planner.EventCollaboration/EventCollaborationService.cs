@@ -9,7 +9,6 @@ namespace commute_planner.EventCollaboration;
 
 public class EventCollaborationService : IHostedService
 {
-  private readonly CancellationTokenSource _cts;
   private readonly ICommutePlannerExchange _exchange;
   private readonly ILogger<EventCollaborationService> _log;
 
@@ -18,25 +17,15 @@ public class EventCollaborationService : IHostedService
     ILogger<EventCollaborationService> log
     )
   {
-    _cts = new();
     _exchange = exchange;
     _log = log;
   }
-  public async Task StartAsync(CancellationToken token = default)
-  {
-    var cts =
-      CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, token);
-    
-    await Task.CompletedTask;
-  }
+  public Task StartAsync(CancellationToken token = default)
+   => Task.CompletedTask;
 
-  public async Task StopAsync(CancellationToken token = default)
+  public Task StopAsync(CancellationToken token = default)
   {
-    var cts =
-      CancellationTokenSource.CreateLinkedTokenSource(_cts.Token, token);
-
     _exchange.Close();
-
-    await Task.CompletedTask;
+    return Task.CompletedTask;
   }
 }

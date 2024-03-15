@@ -14,7 +14,6 @@ public abstract class CommutePlannerExchange : ICommutePlannerExchange
   public const string DataCollectionRoutingKey = "dataCollectionRoutingKey";
   public const string DataProcessingRoutingKey = "dataProcessingRoutingKey";
   
-  private readonly CancellationTokenSource _cts;
   private readonly IConnection _messagingConnection;
   private readonly IModel _channel;
   private readonly ILogger<CommutePlannerExchange> _log;
@@ -26,7 +25,6 @@ public abstract class CommutePlannerExchange : ICommutePlannerExchange
     ILogger<CommutePlannerExchange> log,
     string consumerRoutingKey)
   {
-    _cts = new();
     _messagingConnection = messaging;
     _consumerRoutingKey = consumerRoutingKey;
     _log = log;
