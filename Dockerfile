@@ -1,6 +1,7 @@
 # Use the SDK image for building the solution
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
+RUN dotnet workload install aspire
 COPY ["commute-planner.sln", "."]
 COPY ["Applications/commute-planner.ApiService/commute-planner.ApiService.csproj", "Applications/commute-planner.ApiService/"]
 COPY ["Applications/commute-planner.AppHost/commute-planner.AppHost.csproj", "Applications/commute-planner.AppHost/"]
@@ -22,9 +23,8 @@ COPY ["Components/Tests/commute-planner.TransitApiClient.Tests/commute-planner.T
 COPY ["Databases/commute-planner.CommuteDatabase/commute-planner.CommuteDatabase.csproj", "Databases/commute-planner.CommuteDatabase/"]
 COPY ["TestSupport/commute-planner.FakeMapsServer/commute-planner.FakeMapsServer.csproj", "TestSupport/commute-planner.FakeMapsServer/"]
 COPY ["TestSupport/commute-planner.FakeTransitServer/commute-planner.FakeTransitServer.csproj", "TestSupport/commute-planner.FakeTransitServer/"]
-
-RUN dotnet workload restore
 RUN dotnet restore
+
 COPY . .
 RUN dotnet build "commute-planner.sln" -c Debug -o /app/build
 RUN dotnet test
