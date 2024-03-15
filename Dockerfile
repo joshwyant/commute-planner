@@ -26,36 +26,36 @@ COPY ["TestSupport/commute-planner.FakeTransitServer/commute-planner.FakeTransit
 RUN dotnet restore
 
 COPY . .
-RUN dotnet build "commute-planner.sln" -c Debug -o /app/build
+RUN dotnet build "commute-planner.sln" -c ${BUILD_CONFIGURATION:-Debug} -o /app/build
 RUN dotnet test
 
 # Publish ApiService
 FROM build AS publish-apiservice
-RUN dotnet publish "Applications/commute-planner.ApiService/commute-planner.ApiService.csproj" -c Debug -o /app/publish/apiservice
+RUN dotnet publish "Applications/commute-planner.ApiService/commute-planner.ApiService.csproj" -c ${BUILD_CONFIGURATION:-Debug} -o /app/publish/apiservice
 
 # Publish AppHost
 FROM build AS publish-apphost
-RUN dotnet publish "Applications/commute-planner.AppHost/commute-planner.AppHost.csproj" -c Debug -o /app/publish/apphost
+RUN dotnet publish "Applications/commute-planner.AppHost/commute-planner.AppHost.csproj" -c ${BUILD_CONFIGURATION:-Debug} -o /app/publish/apphost
 
 # Publish Web
 FROM build AS publish-web
-RUN dotnet publish "Applications/commute-planner.Web/commute-planner.Web.csproj" -c Debug -o /app/publish/web
+RUN dotnet publish "Applications/commute-planner.Web/commute-planner.Web.csproj" -c ${BUILD_CONFIGURATION:-Debug} -o /app/publish/web
 
 # Publish DataFetcher
 FROM build AS publish-datafetcher
-RUN dotnet publish "Applications/commute-planner.DataFetcher/commute-planner.DataFetcher.csproj" -c Debug -o /app/publish/datafetcher
+RUN dotnet publish "Applications/commute-planner.DataFetcher/commute-planner.DataFetcher.csproj" -c ${BUILD_CONFIGURATION:-Debug} -o /app/publish/datafetcher
 
 # Publish DataProcessor
 FROM build AS publish-dataprocessor
-RUN dotnet publish "Applications/commute-planner.DataProcessor/commute-planner.DataProcessor.csproj" -c Debug -o /app/publish/dataprocessor
+RUN dotnet publish "Applications/commute-planner.DataProcessor/commute-planner.DataProcessor.csproj" -c ${BUILD_CONFIGURATION:-Debug} -o /app/publish/dataprocessor
 
 # Publish FakeMapsServer
 FROM build AS publish-maps
-RUN dotnet publish "TestSupport/commute-planner.FakeMapsServer/commute-planner.FakeMapsServer.csproj" -c Debug -o /app/publish/maps
+RUN dotnet publish "TestSupport/commute-planner.FakeMapsServer/commute-planner.FakeMapsServer.csproj" -c ${BUILD_CONFIGURATION:-Debug} -o /app/publish/maps
 
 # Publish FakeTransitServer
 FROM build AS publish-transit
-RUN dotnet publish "TestSupport/commute-planner.FakeTransitServer/commute-planner.FakeTransitServer.csproj" -c Debug -o /app/publish/transit
+RUN dotnet publish "TestSupport/commute-planner.FakeTransitServer/commute-planner.FakeTransitServer.csproj" -c ${BUILD_CONFIGURATION:-Debug} -o /app/publish/transit
 
 # Final stage/image for Web
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final-web
