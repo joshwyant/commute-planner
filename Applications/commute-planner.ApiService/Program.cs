@@ -19,7 +19,12 @@ builder.Services.AddLogging(configure => configure.AddConsole());
 
 var app = builder.Build();
 
-await app.Services.SetupCommuteDatabaseAsync();
+using (var scope = app.Services.CreateScope())
+{
+  var logger = scope.ServiceProvider
+    .GetRequiredService<ILogger<CommutePlannerDbContext>>();
+  await app.Services.SetupCommuteDatabaseAsync(logger);
+}
 
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler();

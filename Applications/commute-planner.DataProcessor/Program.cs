@@ -14,7 +14,12 @@ builder.Services.AddLogging(configure => configure.AddConsole());
 builder.Services.AddDataProcessingServices();  // This app
 
 var app = builder.Build();
-await app.Services.SetupCommuteDatabaseAsync();
+using (var scope = app.Services.CreateScope())
+{
+  var logger = scope.ServiceProvider
+    .GetRequiredService<ILogger<CommutePlannerDbContext>>();
+  await app.Services.SetupCommuteDatabaseAsync(logger);
+}
 
 // When running hosted services
 await app.RunAsync();

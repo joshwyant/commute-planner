@@ -23,6 +23,7 @@ COPY ["Components/Tests/commute-planner.TransitApiClient.Tests/commute-planner.T
 COPY ["Databases/commute-planner.CommuteDatabase/commute-planner.CommuteDatabase.csproj", "Databases/commute-planner.CommuteDatabase/"]
 COPY ["TestSupport/commute-planner.FakeMapsServer/commute-planner.FakeMapsServer.csproj", "TestSupport/commute-planner.FakeMapsServer/"]
 COPY ["TestSupport/commute-planner.FakeTransitServer/commute-planner.FakeTransitServer.csproj", "TestSupport/commute-planner.FakeTransitServer/"]
+COPY ["TestSupport/commute-planner.IntegrationTests/commute-planner.IntegrationTests.csproj", "TestSupport/commute-planner.IntegrationTests/"]
 RUN dotnet restore
 
 COPY . .

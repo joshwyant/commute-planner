@@ -1,20 +1,67 @@
+using System.Diagnostics;
+using System.Net.Sockets;
 using commute_planner.CommuteDatabase.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Npgsql;
 
 namespace commute_planner.CommuteDatabase;
 
 public static class ServiceExtensions
 {
   public static async Task SetupCommuteDatabaseAsync(
-    this IServiceProvider services, CancellationToken token = default)
+    this IServiceProvider services, ILogger<CommutePlannerDbContext> log, 
+    CancellationToken token = default)
   {
     using var scope = services.CreateScope();
     var db = scope.ServiceProvider
       .GetRequiredService<CommutePlannerDbContext>();
 
+    var backoff = 250;
+    var dbIsNew = false;
+    var sw = new Stopwatch(); sw.Start();
+    var timedOut = true;
+    using (var timeoutCts = new CancellationTokenSource(300000))  // Wait up to 5 minutes
+    using (var linkedCts =
+           CancellationTokenSource.CreateLinkedTokenSource(token,
+             timeoutCts.Token))
+    {
+      while (true)
+      {
+        try
+        {
+          dbIsNew = await db.Database.EnsureCreatedAsync(linkedCts.Token);
+
+          timedOut = false;
+          sw.Stop();
+          log.LogInformation(
+            $"Connected to the database in {sw.ElapsedMilliseconds}ms");
+          break;
+        }
+        catch (NpgsqlException e)
+        {
+          if (e.InnerException is SocketException
+              {
+                SocketErrorCode: SocketError.ConnectionRefused
+              })
+          {
+            log.LogInformation(
+              $"Attempt to connect to the database failed. Trying again in {backoff}ms");
+            // The database is not ready; let's pause a little bit.
+            await Task.Delay(backoff, linkedCts.Token);
+            backoff = backoff * 3 / 2; // 1.5x
+          }
+        }
+      }
+    }
+
+    if (timedOut)
+      throw new TimeoutException(
+        "Task canceled or timed out trying to connect to the database.");
+
     // Seed the database
-    if (await db.Database.EnsureCreatedAsync(token))
+    if (dbIsNew)
     {
       foreach (var pair in _pairs)
       {
