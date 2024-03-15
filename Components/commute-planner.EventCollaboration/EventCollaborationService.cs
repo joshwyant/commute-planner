@@ -7,25 +7,17 @@ using RabbitMQ.Client.Events;
 
 namespace commute_planner.EventCollaboration;
 
-public class EventCollaborationService : IHostedService
+public class EventCollaborationService(
+  ICommutePlannerExchange exchange,
+  ILogger<EventCollaborationService> log)
+  : IHostedService
 {
-  private readonly ICommutePlannerExchange _exchange;
-  private readonly ILogger<EventCollaborationService> _log;
+  private readonly ICommutePlannerExchange _exchange = exchange;
+  private readonly ILogger<EventCollaborationService> _log = log;
 
-  public EventCollaborationService(
-    ICommutePlannerExchange exchange,
-    ILogger<EventCollaborationService> log
-    )
-  {
-    _exchange = exchange;
-    _log = log;
-  }
   public Task StartAsync(CancellationToken token = default)
-   => Task.CompletedTask;
+   => _exchange.OpenAsync(token);
 
   public Task StopAsync(CancellationToken token = default)
-  {
-    _exchange.Close();
-    return Task.CompletedTask;
-  }
+    => _exchange.CloseAsync(token);
 }

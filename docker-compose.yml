@@ -24,8 +24,9 @@ services:
       dockerfile: Dockerfile
       target: final-dataprocessor
     environment:
-      ConnectionStrings__commute_db: Host=postgresql;Username=user;Password=password;Database=commute_db
+      ConnectionStrings__commutedb: Host=postgresql;Username=user;Password=password;Database=commutedb
       ConnectionStrings__messaging: amqp://user:password@rabbitmq:5672/
+      DOTNET_ENVIRONMENT: Development
     depends_on:
       - rabbitmq
       - postgresql
@@ -39,6 +40,7 @@ services:
       ConnectionStrings__messaging: amqp://user:password@rabbitmq:5672/
       GOOGLE_BASE_URL: http://maps:8080
       TRANSIT_BASE_URL: http://transit:8080
+      DOTNET_ENVIRONMENT: Development
     depends_on:
       - rabbitmq
       - transit
@@ -50,7 +52,8 @@ services:
       dockerfile: Dockerfile
       target: final-apiservice
     environment:
-      ConnectionStrings__commute_db: Host=postgresql;Username=user;Password=password;Database=commute_db
+      ConnectionStrings__commutedb: Host=postgresql;Username=user;Password=password;Database=commutedb
+      ASPNETCORE_ENVIRONMENT: Development
     depends_on:
       - postgresql
   
@@ -64,6 +67,7 @@ services:
       - apiservice
     environment:
       API_BASE_URL: http://apiservice:8080
+      ASPNETCORE_ENVIRONMENT: Development
     ports:
       - "5015:8080"
   
@@ -72,12 +76,16 @@ services:
       context: .
       dockerfile: Dockerfile
       target: final-maps
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
   
   transit:
     build:
       context: .
       dockerfile: Dockerfile
       target: final-transit
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
 
 volumes:
   postgres-data:

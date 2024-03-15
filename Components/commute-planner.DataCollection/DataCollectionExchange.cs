@@ -7,14 +7,14 @@ namespace commute_planner.DataCollection;
 
 public class DataCollectionExchange : CommutePlannerExchange
 {
-  public DataCollectionExchange(IConnection messaging,
-    ILogger<CommutePlannerExchange> log) : base(messaging, log,
+  public DataCollectionExchange(IConnectionFactory factory,
+    ILogger<CommutePlannerExchange> log) : base(factory, log,
     DataCollectionRoutingKey)
   {
   }
 
-  protected override void OnMessage(string messageType, string routingKey,
-    string message)
+  protected override async Task OnMessageAsync(string messageType, string routingKey,
+    string message, CancellationToken token)
   {
     switch (messageType)
     {

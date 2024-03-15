@@ -6,8 +6,8 @@ namespace commute_planner.EventCollaboration;
 
 public interface ICommutePlannerExchange : IBasicConsumer
 {
-  void Close();
-  void Publish<T>(string routingKey, T message);
+  Task OpenAsync(CancellationToken token = default);
+  Task CloseAsync(CancellationToken token = default);
 }
 
 public record DrivingTrip(int RouteId, int TimeInSeconds, DateTime Created);

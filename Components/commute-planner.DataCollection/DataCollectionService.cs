@@ -53,7 +53,7 @@ public class DataCollectionService : IHostedService
             new CollectedDrivingDataResponse(request.routeId, $"{minutes} minutes");
 
           // Send the data to the data processor service
-          _exchange.Publish(CommutePlannerExchange.DataProcessingRoutingKey, res);
+          await _exchange.PublishAsync(CommutePlannerExchange.DataProcessingRoutingKey, res, token);
       }
       catch (TaskCanceledException e)
       {
@@ -71,7 +71,7 @@ public class DataCollectionService : IHostedService
         var res = new CollectedStopMonitoringResponse(request.routeId, result1);
 
         // Send the data to the processing service
-        _exchange.Publish(CommutePlannerExchange.DataProcessingRoutingKey, res);
+        await _exchange.PublishAsync(CommutePlannerExchange.DataProcessingRoutingKey, res, token);
       }
       catch (TaskCanceledException)
       {

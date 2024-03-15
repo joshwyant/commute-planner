@@ -1,5 +1,5 @@
 # Use the SDK image for building the solution
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0.100-preview.2-bookworm-slim-arm64v8 AS build
 WORKDIR /src
 RUN dotnet workload install aspire
 COPY ["commute-planner.sln", "."]
@@ -59,37 +59,37 @@ FROM build AS publish-transit
 RUN dotnet publish "TestSupport/commute-planner.FakeTransitServer/commute-planner.FakeTransitServer.csproj" -c ${BUILD_CONFIGURATION:-Debug} -o /app/publish/transit
 
 # Final stage/image for Web
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final-web
+FROM mcr.microsoft.com/dotnet/sdk:9.0.100-preview.2-bookworm-slim-arm64v8 AS final-web
 WORKDIR /app
 COPY --from=publish-web /app/publish/web .
 ENTRYPOINT ["dotnet", "commute-planner.Web.dll"]
 
 # Final stage/image for ApiService
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final-apiservice
+FROM mcr.microsoft.com/dotnet/sdk:9.0.100-preview.2-bookworm-slim-arm64v8 AS final-apiservice
 WORKDIR /app
 COPY --from=publish-apiservice /app/publish/apiservice .
 ENTRYPOINT ["dotnet", "commute-planner.ApiService.dll"]
 
 # Final stage/image for DataFetcher
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final-datafetcher
+FROM mcr.microsoft.com/dotnet/sdk:9.0.100-preview.2-bookworm-slim-arm64v8 AS final-datafetcher
 WORKDIR /app
 COPY --from=publish-datafetcher /app/publish/datafetcher .
 ENTRYPOINT ["dotnet", "commute-planner.DataFetcher.dll"]
 
 # Final stage/image for DataProcessor
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final-dataprocessor
+FROM mcr.microsoft.com/dotnet/sdk:9.0.100-preview.2-bookworm-slim-arm64v8 AS final-dataprocessor
 WORKDIR /app
 COPY --from=publish-dataprocessor /app/publish/dataprocessor .
 ENTRYPOINT ["dotnet", "commute-planner.DataProcessor.dll"]
 
 # Final stage/image for FakeMapsServer
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final-maps
+FROM mcr.microsoft.com/dotnet/sdk:9.0.100-preview.2-bookworm-slim-arm64v8 AS final-maps
 WORKDIR /app
 COPY --from=publish-maps /app/publish/maps .
 ENTRYPOINT ["dotnet", "commute-planner.FakeMapsServer.dll"]
 
 # Final stage/image for FakeTransitServer
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final-transit
+FROM mcr.microsoft.com/dotnet/sdk:9.0.100-preview.2-bookworm-slim-arm64v8 AS final-transit
 WORKDIR /app
 COPY --from=publish-transit /app/publish/transit .
 ENTRYPOINT ["dotnet", "commute-planner.FakeTransitServer.dll"]

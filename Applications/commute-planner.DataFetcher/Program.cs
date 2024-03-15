@@ -13,14 +13,12 @@ var googleApiKey = builder.Configuration["GOOGLE_API_KEY"];
 var transitBaseUrl = builder.Configuration["TRANSIT_BASE_URL"];
 var transitApiKey = builder.Configuration["TRANSIT_API_KEY"];
 
-builder.AddRabbitMQ("messaging");
-
 // Add HTTP client configurations for our Maps and Transit APIs
 builder.Services.AddMapsApiHttpClient(googleBaseUrl, googleApiKey);
 builder.Services.AddTransitApiHttpClient(transitBaseUrl, transitApiKey);
 // Add a console logger.
 // Add our hosted services
-builder.Services.AddDataCollectionServices();  // This app
+builder.AddDataCollectionServices("messaging");  // This app
 
 var app = builder.Build();
 

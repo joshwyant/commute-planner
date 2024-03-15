@@ -28,7 +28,7 @@ if (true)
 {
   // Start and link some containers.
   var postgresdb = builder.AddPostgres("pg")
-                          .AddDatabase("commute_db");
+                          .AddDatabase("commutedb");
 
   var messaging = builder.AddRabbitMQ("messaging");
 

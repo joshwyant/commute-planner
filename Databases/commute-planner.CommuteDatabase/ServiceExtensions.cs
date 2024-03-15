@@ -34,11 +34,7 @@ public static class ServiceExtensions
         try
         {
           dbIsNew = await db.Database.EnsureCreatedAsync(linkedCts.Token);
-
           timedOut = false;
-          sw.Stop();
-          log.LogInformation(
-            $"Connected to the database in {sw.ElapsedMilliseconds}ms");
           break;
         }
         catch (NpgsqlException e)
@@ -61,10 +57,15 @@ public static class ServiceExtensions
     if (timedOut)
       throw new TimeoutException(
         "Task canceled or timed out trying to connect to the database.");
+    
+    sw.Stop();
+    log.LogInformation(
+      $"Connected to the database in {sw.ElapsedMilliseconds}ms");
 
     // Seed the database
     if (dbIsNew)
     {
+      sw.Restart();
       foreach (var pair in _pairs)
       {
         var transitRoute = new TransitRoute()
@@ -95,6 +96,9 @@ public static class ServiceExtensions
       }
 
       await db.SaveChangesAsync(token);
+      
+      sw.Stop();
+      log.LogInformation($"Seeded the database in {sw.ElapsedMilliseconds}ms");
     }
 
     // Perform migrations

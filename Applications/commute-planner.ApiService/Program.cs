@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
 using commute_planner.CommuteDatabase;
 using commute_planner.EventCollaboration;
 using Microsoft.EntityFrameworkCore;
@@ -8,8 +9,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add service defaults & Aspire components:
 builder.AddServiceDefaults();
 
+var connectionString = builder.Configuration.GetConnectionString("commutedb");
+// Console.WriteLine($"Connection string: '{connectionString}'");
+
 // Database
-builder.AddNpgsqlDbContext<CommutePlannerDbContext>("commute_db");
+builder.AddNpgsqlDbContext<CommutePlannerDbContext>("commutedb",
+  settings => settings.ConnectionString = connectionString);
 
 // Add services to the container.
 builder.Services.AddProblemDetails();

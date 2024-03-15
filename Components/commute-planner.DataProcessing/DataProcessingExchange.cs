@@ -8,12 +8,12 @@ namespace commute_planner.DataProcessing;
 
 public class DataProcessingExchange : CommutePlannerExchange
 {
-  public DataProcessingExchange(IConnection messaging, ILogger<CommutePlannerExchange> log)
-    : base(messaging, log, DataProcessingRoutingKey)
+  public DataProcessingExchange(IConnectionFactory factory, ILogger<CommutePlannerExchange> log)
+    : base(factory, log, DataProcessingRoutingKey)
   {
   }
 
-  protected override void OnMessage(string messageType, string routingKey, string message)
+  protected override async Task OnMessageAsync(string messageType, string routingKey, string message, CancellationToken token)
   {
     switch (messageType)
     {

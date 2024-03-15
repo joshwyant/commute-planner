@@ -45,7 +45,7 @@ public class DataProcessingService : IHostedService
   {
     var task = Task.Run(async () =>
     {
-      while (!_cts.IsCancellationRequested)
+      while (!token.IsCancellationRequested)
       {
         using var scope = _scopeFactory.CreateScope();
         var db = scope.ServiceProvider
@@ -61,8 +61,8 @@ public class DataProcessingService : IHostedService
             route.MatchingRouteId,
             drivingRoute.FromAddress,
             drivingRoute.ToAddress);
-          _exchange.Publish(DataProcessingExchange.DataCollectionRoutingKey,
-            drivingRequest);
+          await _exchange.PublishAsync(DataProcessingExchange.DataCollectionRoutingKey,
+            drivingRequest, token);
           await Task.Yield();
           
           // Collect transit times for each route
@@ -72,8 +72,8 @@ public class DataProcessingService : IHostedService
             transitRoute.LineId,
             transitRoute.FromStopId,
             transitRoute.ToStopId);
-          _exchange.Publish(DataProcessingExchange.DataCollectionRoutingKey,
-            transitRequest);
+          await _exchange.PublishAsync(DataProcessingExchange.DataCollectionRoutingKey,
+            transitRequest, token);
           await Task.Yield();
         }
         await Task.Delay(300000, token);  // 5 minutes
