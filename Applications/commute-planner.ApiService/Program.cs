@@ -1,5 +1,4 @@
 using System.Text.RegularExpressions;
-using commute_planner.ApiService;
 using commute_planner.CommuteDatabase;
 using commute_planner.EventCollaboration;
 using Microsoft.EntityFrameworkCore;
@@ -72,32 +71,42 @@ app.MapGet("/latestTrip", async (CancellationToken token,
   var backoff = 1000;
   while (!linkedCts.Token.IsCancellationRequested)
   {
-    var trip = db.TripData.AsNoTracking()
-      .Include(t => t.Route)
-      .Include(t => t.Route.DrivingRoute)
-      .Include(t => t.Route.TransitRoute)
-      .OrderByDescending(trip => trip.Created).SingleOrDefault();
-
-    if (trip != null)
+    try
     {
-      var route = trip.Route;
-      var transitRoute = route.TransitRoute;
-      var drivingRoute = route.DrivingRoute;
-      var drivingTime = $"{trip.DrivingTimeInSeconds / 60} minutes";
-      var transitTime = $"{trip.TransitTimeInSeconds / 60} minutes";
-      var lastUpdate = DateTime.Now - trip.Created;
-      var lastUpdatedTime = lastUpdate.Minutes switch
+      var trip = await db.TripData
+        .AsNoTracking()
+        .Include(t => t.Route)
+        .Include(t => t.Route.DrivingRoute)
+        .Include(t => t.Route.TransitRoute)
+        .OrderByDescending(trip => trip.Created)
+        .SingleOrDefaultAsync(linkedCts.Token);
+
+      if (trip != null)
       {
-        0 => "just now",
-        var m => $"{m} minutes ago"
-      };
-      var isDrivingFaster =
-        trip.DrivingTimeInSeconds > trip.TransitTimeInSeconds;
-      return new Trip(
-        new Route(trip.MatchingRouteId, route.Name,
-          new TransitRoute(transitRoute.Description, transitRoute.LineId),
-          new DrivingRoute(drivingRoute.Description)), drivingTime, transitTime,
-        lastUpdatedTime, isDrivingFaster);
+        var route = trip.Route;
+        var transitRoute = route.TransitRoute;
+        var drivingRoute = route.DrivingRoute;
+        var drivingTime = $"{trip.DrivingTimeInSeconds / 60} minutes";
+        var transitTime = $"{trip.TransitTimeInSeconds / 60} minutes";
+        var lastUpdate = DateTime.Now - trip.Created;
+        var lastUpdatedTime = lastUpdate.Minutes switch
+        {
+          0 => "just now",
+          var m => $"{m} minutes ago"
+        };
+        var isDrivingFaster =
+          trip.DrivingTimeInSeconds > trip.TransitTimeInSeconds;
+        return new Trip(
+          new Route(trip.MatchingRouteId, route.Name,
+            new TransitRoute(transitRoute.Description, transitRoute.LineId),
+            new DrivingRoute(drivingRoute.Description)), drivingTime,
+          transitTime,
+          lastUpdatedTime, isDrivingFaster);
+      }
+    }
+    catch (TaskCanceledException)
+    {
+      log.LogInformation("Task canceled while finding trip data");
     }
 
     log.LogInformation($"No trip data was available. Waiting {backoff}ms...");

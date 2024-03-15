@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  postgresql:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: commute_db
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+        
+  dataprocessor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: final-dataprocessor
+    environment:
+      ConnectionStrings__commute_db: Host=postgresql;Username=user;Password=password;Database=commute_db
+      ConnectionStrings__messaging: amqp://user:password@rabbitmq:5672/
+    depends_on:
+      - rabbitmq
+      - postgresql
+  
+  datafetcher:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: final-datafetcher
+    environment:
+      ConnectionStrings__messaging: amqp://user:password@rabbitmq:5672/
+      GOOGLE_BASE_URL: http://maps:8080
+      TRANSIT_BASE_URL: http://transit:8080
+    depends_on:
+      - rabbitmq
+      - transit
+      - maps
+  
+  apiservice:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: final-apiservice
+    environment:
+      ConnectionStrings__commute_db: Host=postgresql;Username=user;Password=password;Database=commute_db
+    depends_on:
+      - postgresql
+  
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: final-web
+    command: /bin/bash
+    depends_on:
+      - apiservice
+    environment:
+      API_BASE_URL: http://apiservice:8080
+    ports:
+      - "5015:8080"
+  
+  maps:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: final-maps
+  
+  transit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: final-transit
+
+volumes:
+  postgres-data:
+  rabbitmq-data:

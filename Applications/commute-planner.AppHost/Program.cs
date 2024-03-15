@@ -1,25 +1,42 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var postgresdb = builder.AddPostgres("pg")
-                        .AddDatabase("commute_db");
-
-var messaging = builder.AddRabbitMQ("messaging");
-
 var apiService = builder
-    .AddProject<Projects.commute_planner_ApiService>("apiservice")
-    .WithReference(postgresdb);
+  .AddProject<Projects.commute_planner_ApiService>("apiservice");
 
-builder.AddProject<Projects.commute_planner_Web>("webfrontend")
-    .WithReference(apiService);
+var datafetcher =
+  builder.AddProject<Projects.commute_planner_DataFetcher>("datafetcher");
 
-builder.AddProject<Projects.commute_planner_DataFetcher>("datafetcher")
-  .WithReference(messaging);
+var dataprocessor =
+  builder.AddProject<Projects.commute_planner_DataProcessor>("dataprocessor");
 
-builder.AddProject<Projects.commute_planner_DataProcessor>("dataprocessor")
-  .WithReference(postgresdb)
-  .WithReference(messaging);
-
+builder.AddProject<Projects.commute_planner_Web>("webfrontend");
 builder.AddProject<Projects.commute_planner_FakeMapsServer>("maps");
 builder.AddProject<Projects.commute_planner_FakeTransitServer>("transit");
+
+// Pass along API environment variables
+foreach (var name in new[]
+         {
+           "GOOGLE_BASE_URL", "GOOGLE_API_KEY", "TRANSIT_BASE_URL",
+           "TRANSIT_API_KEY"
+         })
+{
+  var val = Environment.GetEnvironmentVariable(name);
+  if (val != null) datafetcher.WithEnvironment(name, val);
+}
+
+if (true)
+{
+  // Start and link some containers.
+  var postgresdb = builder.AddPostgres("pg")
+                          .AddDatabase("commute_db");
+
+  var messaging = builder.AddRabbitMQ("messaging");
+
+  apiService.WithReference(postgresdb);
+  datafetcher.WithReference(messaging);
+  dataprocessor
+    .WithReference(postgresdb)
+    .WithReference(messaging);
+}
 
 builder.Build().Run();
