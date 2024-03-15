@@ -19,7 +19,8 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '9.0.0-preview.2.24128.5'
+          dotnet-version: '9.0.x'
+          dotnet-quality: 'preview'
           include-prerelease: true
 
       - name: Install the Aspire workload
