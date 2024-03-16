@@ -12,12 +12,12 @@ public static class ServiceExtensions
     }
   }
   public static IServiceCollection AddMapsApiHttpClient(
-    this IServiceCollection services, string baseUrl,
+    this IServiceCollection services, string? baseUrl,
     string apiKey)
   {
     services.AddHttpClient<MapsApiClient>(client =>
     {
-      client.BaseAddress = new Uri(baseUrl);
+      client.BaseAddress = new Uri(baseUrl ?? "http://maps");
       client.DefaultRequestHeaders.Add("X-Goog-Api-Key", apiKey);
     }).AddHttpMessageHandler(i => new HttpHandler());
 

@@ -7,11 +7,11 @@ public static class ServiceCollectionExtensions
 {
   public static IServiceCollection AddTransitApiHttpClient(
     this IServiceCollection services,
-    string baseUrl, string apiKey)
+    string? baseUrl, string apiKey)
   {
     services.AddHttpClient<TransitApiClient>(client =>
       {
-        client.BaseAddress = new Uri(baseUrl);
+        client.BaseAddress = new Uri(baseUrl ?? "http://transit");
       })
       .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
       {
