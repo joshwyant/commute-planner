@@ -1,7 +1,63 @@
 ﻿@page "/"
+@using Route = commute_planner.ApiClient.Route
+@inject CommutePlannerApiClient Client
+@rendermode InteractiveServer
 
 <PageTitle>Home</PageTitle>
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
+@if (_routes is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <select @bind="_routeId" @bind:after="UpdateRouteOptionAsync">
+        <option value="0">Select a route</option>
+        @foreach (var route in _routes)
+        {
+            <option value="@route.MatchingRouteId">@route.Name</option>
+        }
+    </select>
+}
+@if (_routes is null || _trip is null)
+{
+    <p>No route selected.</p>
+}
+else
+{
+    <h2>@_trip.Route.Name</h2>
+    
+    <p>If you're taking this route, <strong>@(_trip.IsDrivingFaster ? "driving" : "taking transit")</strong>
+        would be faster.</p>
+    
+    <p>Taking <strong>transit</strong> would take @_trip.TransitTime, or <strong>driving</strong> would take 
+        @_trip.DrivingTime. Updated @_trip.LastUpdated.</p>
+    
+    <h3>Transit option - <strong>@_trip.Route.TransitRoute.Line Line</strong></h3>
+    
+    <p>@_trip.Route.TransitRoute.Description</p>
+    
+    <h3>Driving option</h3>
+    
+    <p>@_trip.Route.DrivingRoute.Description</p>
+}
+
+@code
+{
+    Route[]? _routes;
+    Trip? _trip;
+    int _routeId;
+    protected override async Task OnInitializedAsync()
+    {
+        _routes = (await Client.GetRoutesAsync())!.ToArray();
+    }
+
+    private async Task UpdateRouteOptionAsync()
+    {
+        _trip = _routeId == 0
+            ? null
+            : await Client.GetLatestTripAsync(_routeId);
+    }
+}

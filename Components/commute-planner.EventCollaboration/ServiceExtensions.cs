@@ -20,8 +20,8 @@ public static class ServiceExtensions
       = (connectionStringName is null
           ? null
           : builder.Configuration.GetConnectionString(connectionStringName))
-        ?? builder.Configuration[""] // TODO: Aspire configuration value
-        ?? throw new InvalidOperationException("Connection string not found.");
+        ?? null; //builder.Configuration[""] // TODO: Aspire configuration value
+        //?? throw new InvalidOperationException("Connection string not found.");
 
     return builder.AddEventCollaborationServices<T>(config =>
       new() { Uri = new(connectionString) });
@@ -35,8 +35,8 @@ public static class ServiceExtensions
     builder.Services.AddSingleton<T>();
 
     // This is how we'll inject RabbitMQ instead of Aspire.
-    builder.Services.AddSingleton<IConnectionFactory>(_ => new ConnectionFactory
-      { Uri = config?.Invoke(new()).Uri });
+    // builder.Services.AddSingleton<IConnectionFactory>(_ => new ConnectionFactory
+    //   { Uri = config?.Invoke(new()).Uri });
 
     // Register EventCollaborationService, assuming it depends on CommutePlannerExchange
     builder.Services.AddHostedService<EventCollaborationService>();

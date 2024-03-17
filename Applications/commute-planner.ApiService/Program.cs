@@ -1,6 +1,7 @@
 using System.Text.RegularExpressions;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using commute_planner.CommuteDatabase;
+using commute_planner.CommuteDatabase.Models;
 using commute_planner.EventCollaboration;
 using Microsoft.EntityFrameworkCore;
 
@@ -75,13 +76,34 @@ app.MapGet("/latestTrip", async (CancellationToken token,
   {
     try
     {
-      var trip = await db.TripData
-        .AsNoTracking()
-        .Include(t => t.Route)
-        .Include(t => t.Route.DrivingRoute)
-        .Include(t => t.Route.TransitRoute)
-        .OrderByDescending(trip => trip.Created)
-        .SingleOrDefaultAsync(linkedCts.Token);
+      /// Fake data
+      
+      var matchingRoute = await db.MatchingRoutes
+        .Include(r => r.TransitRoute)
+        .Include(r => r.DrivingRoute)
+        .SingleOrDefaultAsync(r => r.MatchingRouteId == routeId,
+          linkedCts.Token);
+
+      var driving_m = Random.Shared.Next(15000);
+      var driving_kph = Random.Shared.Next(20, 80);
+      var driving_mps = driving_kph * 1000 / 3600;
+      var driving_t = driving_m / driving_mps;
+      
+      var tm = Random.Shared.Next(15000);
+      var kph = Random.Shared.Next(20, 80);
+      var mps = kph * 1000 / 3600;
+      var t = tm / mps;
+      
+      var trip = new TripData
+      {
+        Created = DateTime.Now,
+        Route = matchingRoute,
+        MatchingRouteId = routeId,
+        DrivingTimeInSeconds = driving_t,
+        TransitTimeInSeconds = t
+      };
+      
+      /// End fake data
 
       if (trip != null)
       {
